@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚡ Izumi Downloader</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at top, #0f1020, #05050a);
+  font-family: 'Poppins', system-ui, sans-serif;
+  color: white;
+}
+
+.card {
+  width: 92%;
+  max-width: 420px;
+  background: rgba(20,20,40,0.55);
+  backdrop-filter: blur(20px);
+  border-radius: 22px;
+  padding: 28px;
+  box-shadow: 0 0 40px rgba(120,90,255,0.25);
+  text-align: center;
+  animation: fadeIn .8s ease;
+}
+
+@keyframes fadeIn {
+  from {opacity:0; transform: translateY(20px);}
+  to {opacity:1; transform: translateY(0);}
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.logo span {
+  color: #8f7bff;
+}
+
+.subtitle {
+  opacity: .7;
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  outline: none;
+  background: rgba(0,0,0,.4);
+  color: white;
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  color: white;
+  background: linear-gradient(135deg,#7b5cff,#9b6dff);
+  box-shadow: 0 0 20px rgba(130,100,255,.4);
+  transition: .3s;
+}
+
+button:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 35px rgba(150,120,255,.7);
+}
+
+.status {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.hidden {
+  display: none;
+}
+
+.loader {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 4px solid rgba(255,255,255,.15);
+  border-top: 4px solid #8f7bff;
+  animation: spin .9s linear infinite;
+  box-shadow: 0 0 20px rgba(140,120,255,.6);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+a {
+  color: #9b8bff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer {
+  margin-top: 16px;
+  font-size: 12px;
+  opacity: .5;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <div class="logo">⚡ IZUMI</div>
+  <div class="subtitle">Dark Media Downloader</div>
+
+  <input id="linkInput" placeholder="Paste video or file link here...">
+  <button onclick="startDownload()">DOWNLOAD</button>
+
+  <div id="statusBox" class="status hidden">
+    <div class="loader"></div>
+    <p id="statusText">Izumi is pulling power...</p>
+  </div>
+
+  <div id="result"></div>
+
+  <div class="footer">Built by Rohit • Izumi Engine</div>
+</div>
+
+<script>
+const statusBox = document.getElementById("statusBox");
+const statusText = document.getElementById("statusText");
+const resultBox = document.getElementById("result");
+
+function showStatus(text) {
+  statusBox.classList.remove("hidden");
+  statusText.innerText = text;
+}
+
+function hideStatus() {
+  statusBox.classList.add("hidden");
+}
+
+async function startDownload() {
+  const link = document.getElementById("linkInput").value.trim();
+  resultBox.innerHTML = "";
+
+  if (!link) {
+    alert("Paste a link first");
+    return;
+  }
+
+  showStatus("⚡ Izumi is pulling power...");
+
+  try {
+    const res = await fetch("/api/download", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ url: link })
+    });
+
+    const data = await res.json();
+
+    if (data.status === "success") {
+      showStatus("✅ Download ready!");
+      resultBox.innerHTML = `<br><a href="${data.link}" download>⬇ Click to download file</a>`;
+    } else {
+      showStatus("❌ " + data.message);
+    }
+
+  } catch (e) {
+    showStatus("❌ Server error");
+  }
+}
+</script>
+
+</body>
+</html>
