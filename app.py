@@ -1,96 +1,52 @@
-from flask import Flask, request, jsonify, send_from_directory, render_template, after_this_request
-import requests
 import os
-import subprocess
-import uuid
-import threading
-import time
+from flask import Flask, render_template, request, send_file
+import yt_dlp
 
 app = Flask(__name__)
 
-# 🔹 Folder Setup
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DOWNLOAD_FOLDER = os.path.join(BASE_DIR, "downloads")
-TEMPLATES_FOLDER = os.path.join(BASE_DIR, "templates")
+# Download folder setup
+DOWNLOAD_FOLDER = 'downloads'
+if not os.path.exists(DOWNLOAD_FOLDER):
+    os.makedirs(DOWNLOAD_FOLDER)
 
-for folder in [DOWNLOAD_FOLDER, TEMPLATES_FOLDER]:
-    if not os.path.exists(folder):
-        os.makedirs(folder)
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-# ---------------- Background Cleanup Function ----------------
-def delete_file_later(filepath, delay=600): # 10 minutes delay
-    def delay_delete():
-        time.sleep(delay)
-        if os.path.exists(filepath):
-            os.remove(filepath)
-            print(f"🔥 Auto-deleted: {filepath}")
-    
-    threading.Thread(target=delay_delete).start()
-
-# ---------------- Platform Detection ----------------
-def detect_platform(url: str) -> str:
-    url = url.lower()
-    if "youtube.com" in url or "youtu.be" in url or "googleusercontent.com" in url:
-        return "youtube"
-    elif "instagram.com" in url:
-        return "instagram"
-    elif "pin.it" in url or "pinterest.com" in url:
-        return "pinterest"
-    else:
-        return "direct"
-
-# ---------------- Routes ----------------
-@app.route("/")
-def home():
-    try:
-        return render_template("index.html")
-    except:
-        return "⚡ Izumi Server is running! (index.html missing)"
-
-@app.route("/api/download", methods=["POST"])
-def download_api():
-    data = request.get_json()
-    video_url = data.get("url", "")
-    
+@app.route('/download', methods=['POST'])
+def download_video():
+    video_url = request.form.get('url')
     if not video_url:
-        return jsonify({"status": "error", "message": "Link kahan hai?"})
-
-    platform = detect_platform(video_url)
-    unique_name = f"{platform}_{uuid.uuid4().hex}.mp4"
-    output_path = os.path.join(DOWNLOAD_FOLDER, unique_name)
+        return "URL missing!", 400
 
     try:
-        if platform in ["youtube", "instagram", "pinterest"]:
-            cmd = [
-                "yt-dlp",
-                "-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best",
-                "--no-playlist",
-                "-o", output_path,
-                video_url
-            ]
-            subprocess.run(cmd, check=True)
-        else:
-            r = requests.get(video_url, stream=True, timeout=30)
-            r.raise_for_status()
-            with open(output_path, "wb") as f:
-                for chunk in r.iter_content(chunk_size=8192):
-                    f.write(chunk)
+        # Final Fixed Options for YouTube and Render
+        ydl_opts = {
+            # 'best' format direct download karega bina merge kiye (FFmpeg error fix)
+            'format': 'best[ext=mp4]/best',
+            'outtmpl': f'{DOWNLOAD_FOLDER}/%(title)s.%(ext)s',
+            'no_warnings': True,
+            'quiet': True,
+            # YouTube block se bachne ke liye Fake Browser identity
+            'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'referer': 'https://www.google.com/',
+            'nocheckcertificate': True,
+        }
 
-        # 🕒 File ko 10 min baad delete karne ke liye schedule karein
-        delete_file_later(output_path)
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            # Video info nikalna aur download karna
+            info = ydl.extract_info(video_url, download=True)
+            file_path = ydl.prepare_filename(info)
 
-        return jsonify({
-            "status": "success",
-            "link": f"/files/{unique_name}"
-        })
+        # File ko user ke phone/PC par bhejna
+        return send_file(file_path, as_attachment=True)
 
     except Exception as e:
-        return jsonify({"status": "error", "message": str(e)})
+        # Agar error aaye toh saaf-saaf dikhana
+        return f"Error: {str(e)}", 500
 
-@app.route("/files/<filename>")
-def serve_file(filename):
-    return send_from_directory(DOWNLOAD_FOLDER, filename, as_attachment=True)
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
-  
+if __name__ == '__main__':
+    # Render ke liye port management
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
+    
