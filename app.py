@@ -1,11 +1,10 @@
-from flask import Flask, request, jsonify, send_from_directory, render_template, after_this_request
 import os
 import subprocess
 import uuid
+from flask import Flask, request, jsonify, send_from_directory, render_template, after_this_request
 
 app = Flask(__name__)
 
-# 🔹 Folder Setup
 DOWNLOAD_FOLDER = "/tmp/downloads"
 if not os.path.exists(DOWNLOAD_FOLDER):
     os.makedirs(DOWNLOAD_FOLDER)
@@ -20,31 +19,35 @@ def download_api():
     video_url = data.get("url", "")
     
     if not video_url:
-        return jsonify({"status": "error", "message": "Link dalo bhai!"})
+        return jsonify({"status": "error", "message": "Link missing!"})
 
-    unique_name = f"video_{uuid.uuid4().hex}.mp4"
+    unique_name = f"nexus_{uuid.uuid4().hex}.mp4"
     output_path = os.path.join(DOWNLOAD_FOLDER, unique_name)
 
     try:
+        # Permanent Solution Strategy:
+        # 1. Use a fresh Mobile User-Agent
+        # 2. Force basic extraction to avoid login walls
         cmd = [
             "yt-dlp",
-            "-f", "best[ext=mp4]", 
-            "--no-playlist",
-            "--user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+            "-f", "best",
+            "--no-check-certificate",
+            "--user-agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 16_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Mobile/15E148 Safari/604.1",
+            "--geo-bypass",
             "-o", output_path,
             video_url
         ]
-        subprocess.run(cmd, check=True, timeout=60)
+        
+        subprocess.run(cmd, check=True, timeout=120)
 
-        return jsonify({
-            "status": "success",
-            "link": f"/files/{unique_name}"
-        })
+        if os.path.exists(output_path):
+            return jsonify({"status": "success", "link": f"/files/{unique_name}"})
+        else:
+            return jsonify({"status": "error", "message": "File download nahi hui."})
 
     except Exception as e:
-        return jsonify({"status": "error", "message": "Server error ya block ho gaya."})
+        return jsonify({"status": "error", "message": "Instagram ne block kiya ya link galat hai."})
 
-# 🔥 YAHAN HAI AUTO-DELETE LOGIC
 @app.route("/files/<filename>")
 def serve_file(filename):
     filepath = os.path.join(DOWNLOAD_FOLDER, filename)
@@ -54,14 +57,12 @@ def serve_file(filename):
         try:
             if os.path.exists(filepath):
                 os.remove(filepath)
-                print(f"🔥 File deleted: {filename}")
-        except Exception as e:
-            print(f"Error: {e}")
+        except Exception:
+            pass
         return response
 
     return send_from_directory(DOWNLOAD_FOLDER, filename, as_attachment=True)
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
     
