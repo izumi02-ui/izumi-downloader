@@ -8,174 +8,89 @@
 <meta name="description" content="NEXUS'S System: High-speed Instagram media fetching engine.">
 
 <meta property="og:title" content="IZUMI Advanced Downloader">
-<meta property="og:description" content="Download high-quality Instagram media instantly via Nexus Engine.">
-<meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/3502/3502458.png"> <meta property="og:type" content="website">
+<meta property="og:description" content="Download high-quality Instagram media instantly via Nexus's Engine.">
+<meta property="og:image" content="https://raw.githubusercontent.com/izumi02-ui/izumi-downloader/refs/heads/main/New%20Project%206%20%5B43F93B0%5D.png">
+<meta property="og:type" content="website">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/izumi02-ui/izumi-downloader/refs/heads/main/New%20Project%206%20%5B43F93B0%5D.png">
 
 <link rel="manifest" href="/manifest.json">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0f1020">
-
-<link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3502/3502458.png">
+<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/izumi02-ui/izumi-downloader/refs/heads/main/New%20Project%206%20%5B43F93B0%5D.png">
 
 <style>
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
 body {
-  margin: 0;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  margin: 0; min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
   background: radial-gradient(circle at top, #0f1020, #05050a);
   font-family: 'Poppins', system-ui, sans-serif;
-  color: white;
-  overflow: hidden;
+  color: white; overflow: hidden;
 }
 
-/* Professional Splash Screen */
 #splash {
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: #05050a;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: #05050a; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; z-index: 9999;
   transition: opacity 0.8s ease, visibility 0.8s;
 }
 
 .splash-logo {
-  font-size: 42px;
-  font-weight: 800;
-  letter-spacing: 5px;
+  font-size: 42px; font-weight: 800; letter-spacing: 5px;
   background: linear-gradient(135deg, #fff, #8f7bff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   animation: pulse 1.5s infinite alternate;
 }
 
-@keyframes pulse {
-  from { transform: scale(1); opacity: 0.7; }
-  to { transform: scale(1.08); opacity: 1; }
-}
+@keyframes pulse { from { transform: scale(1); opacity: 0.7; } to { transform: scale(1.08); opacity: 1; } }
 
 .card {
-  width: 92%;
-  max-width: 420px;
-  background: rgba(20,20,40,0.55);
-  backdrop-filter: blur(25px);
-  border-radius: 24px;
-  padding: 30px;
+  width: 92%; max-width: 420px;
+  background: rgba(20,20,40,0.55); backdrop-filter: blur(25px);
+  border-radius: 24px; padding: 30px;
   box-shadow: 0 0 50px rgba(120,90,255,0.2);
-  border: 1px solid rgba(255,255,255,0.05);
-  text-align: center;
-  animation: fadeIn .8s ease;
-  z-index: 1;
+  border: 1px solid rgba(255,255,255,0.05); text-align: center;
+  animation: fadeIn .8s ease; z-index: 1;
 }
 
-@keyframes fadeIn {
-  from {opacity:0; transform: translateY(20px);}
-  to {opacity:1; transform: translateY(0);}
-}
+@keyframes fadeIn { from {opacity:0; transform: translateY(20px);} to {opacity:1; transform: translateY(0);} }
 
-.logo {
-  font-size: 38px;
-  font-weight: 800;
-  letter-spacing: 3px;
-  margin-bottom: 5px;
-  text-transform: uppercase;
-}
-
+.logo { font-size: 38px; font-weight: 800; letter-spacing: 3px; margin-bottom: 5px; text-transform: uppercase; }
 .logo span { color: #8f7bff; }
-
-.subtitle {
-  font-size: 10px;
-  letter-spacing: 2px;
-  opacity: .5;
-  margin-bottom: 30px;
-  text-transform: uppercase;
-}
+.subtitle { font-size: 10px; letter-spacing: 2px; opacity: .5; margin-bottom: 30px; text-transform: uppercase; }
 
 input {
-  width: 100%;
-  padding: 18px;
-  border-radius: 15px;
-  border: 1px solid rgba(255,255,255,0.1);
-  outline: none;
-  background: rgba(0,0,0,.4);
-  color: white;
-  font-size: 14px;
-  margin-bottom: 15px;
-  transition: 0.3s;
+  width: 100%; padding: 18px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);
+  outline: none; background: rgba(0,0,0,.4); color: white; font-size: 14px; margin-bottom: 15px;
 }
 
-input:focus { border-color: #8f7bff; box-shadow: 0 0 20px rgba(143, 123, 255, 0.2); }
-
 button {
-  width: 100%;
-  padding: 15px;
-  border-radius: 15px;
-  border: none;
-  font-weight: 700;
-  font-size: 15px;
-  cursor: pointer;
-  color: white;
+  width: 100%; padding: 15px; border-radius: 15px; border: none;
+  font-weight: 700; font-size: 15px; cursor: pointer; color: white;
   background: linear-gradient(135deg, #7b5cff, #9b6dff);
-  box-shadow: 0 10px 20px rgba(123,92,255,0.3);
-  transition: .3s;
+  box-shadow: 0 10px 20px rgba(123,92,255,0.3); transition: .3s;
 }
 
 button:active { transform: scale(0.96); }
 
-.status {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-
+.status { margin-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
 .hidden { display: none; }
-
-.loader {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 3px solid rgba(255,255,255,.05);
-  border-top: 3px solid #8f7bff;
-  animation: spin .9s linear infinite;
-}
-
+.loader { width: 32px; height: 32px; border-radius: 50%; border: 3px solid rgba(255,255,255,.05); border-top: 3px solid #8f7bff; animation: spin .9s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 #result a {
-  display: inline-block;
-  margin-top: 20px;
-  color: #fff;
-  text-decoration: none;
-  font-weight: 600;
-  padding: 14px 28px;
-  background: rgba(143, 123, 255, 0.2);
-  border: 1px solid #8f7bff;
-  border-radius: 14px;
-  transition: 0.3s;
+  display: inline-block; margin-top: 20px; color: #fff; text-decoration: none; font-weight: 600;
+  padding: 14px 28px; background: rgba(143, 123, 255, 0.2); border: 1px solid #8f7bff; border-radius: 14px;
 }
 
-.footer {
-  margin-top: 30px;
-  font-size: 9px;
-  opacity: .4;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-}
+.footer { margin-top: 30px; font-size: 9px; opacity: .4; letter-spacing: 1.5px; text-transform: uppercase; }
 </style>
 </head>
-
 <body>
 
 <div id="splash">
@@ -194,14 +109,11 @@ button:active { transform: scale(0.96); }
     <div class="loader"></div>
     <p id="statusText" style="font-size: 12px; opacity: 0.9;">Connecting to engine...</p>
   </div>
-
   <div id="result"></div>
-
   <div class="footer">SYSTEM : NEXUS • CORE : IZUMI • DESIGNED BY : ROHIT</div>
 </div>
 
 <script>
-// Splash Control
 window.addEventListener('load', () => {
   setTimeout(() => {
     const splash = document.getElementById('splash');
@@ -222,18 +134,10 @@ function showStatus(text) {
 async function startDownload() {
   const link = document.getElementById("linkInput").value.trim();
   resultBox.innerHTML = "";
-
-  if (!link) {
-    showStatus("🚫 Error: Please enter a valid URL.");
-    return;
-  }
-
-  if (!link.includes("instagram.com")) {
-    showStatus("🚫 Error: Unsupported platform. Use Instagram.");
-    return;
-  }
-
-  showStatus("⚡ Izumi is fetching data...");
+  if (!link) { showStatus("🚫 Error: Please enter a valid URL."); return; }
+  if (!link.includes("instagram.com")) { showStatus("🚫 Error: Unsupported platform. Use Instagram."); return; }
+  
+  showStatus(" Izumi is fetching data...");
 
   try {
     const res = await fetch("/api/download", {
@@ -241,28 +145,17 @@ async function startDownload() {
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({ url: link })
     });
-
     const data = await res.json();
-
     if (data.status === "success") {
       showStatus("✅ Success: Media engine ready.");
       resultBox.innerHTML = `<a href="${data.link}" download>📥 DOWNLOAD NOW</a>`;
     } else {
-      let errorMsg = data.message.toLowerCase();
-      if (errorMsg.includes("private")) {
-        showStatus("🔒 Error: Private Account detected.");
-      } else if (errorMsg.includes("not found")) {
-        showStatus("🚫 Error: Content not found.");
-      } else {
-        showStatus("⚠️ Request Failed: " + data.message);
-      }
+      showStatus("⚠️ Request Failed: " + data.message);
     }
-
   } catch (e) {
-    showStatus("🚀 Izumi Server Busy. Retrying in 60s...");
+    showStatus("🚀 Izumi Server Busy. Retrying...");
   }
 }
 </script>
-
 </body>
 </html>
