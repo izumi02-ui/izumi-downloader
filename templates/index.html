@@ -208,8 +208,8 @@ async function startDownload() {
     });
     const data = await res.json();
     if (data.status === "success") {
-      showStatus("✅ Success: Media engine ready.");
-      resultBox.innerHTML = `<a href="${data.link}" download onclick="saveToHistory('${data.link}')">📥 DOWNLOAD NOW</a>`;
+      showStatus(" Success: Media engine ready.");
+      resultBox.innerHTML = `<a href="${data.link}" download onclick="saveToHistory('${data.link}')">DOWNLOAD</a>`;
       saveToHistory(data.link);
     } else {
       showStatus("⚠️ " + data.message);
