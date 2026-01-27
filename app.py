@@ -26,25 +26,40 @@ def download_api():
     output_path = os.path.join(DOWNLOAD_FOLDER, unique_name)
 
     try:
+        # 🛡️ Advance Bypass Strategy
         cmd = [
             "yt-dlp",
-            "-f", "best[ext=mp4]", 
+            "-f", "best[ext=mp4]/best", 
             "--no-playlist",
-            "--user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+            # Masking the request to look like a real browser
+            "--user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
+            "--add-header", "Referer:https://www.instagram.com/",
+            "--add-header", "Origin:https://www.instagram.com/",
+            "--no-check-certificate",
+            "--geo-bypass", # Region block hatane ke liye
             "-o", output_path,
             video_url
         ]
-        subprocess.run(cmd, check=True, timeout=60)
+        
+        # subprocess.run pe thoda extra control
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=90)
+
+        if result.returncode != 0:
+            print(f"YT-DLP Error: {result.stderr}")
+            return jsonify({"status": "error", "message": "Instagram ne block kiya. 2 min baad try karein."})
 
         return jsonify({
             "status": "success",
             "link": f"/files/{unique_name}"
         })
 
+    except subprocess.TimeoutExpired:
+        return jsonify({"status": "error", "message": "Server slow hai, re-fetch karein."})
     except Exception as e:
-        return jsonify({"status": "error", "message": "Server error ya block ho gaya."})
+        print(f"System Error: {str(e)}")
+        return jsonify({"status": "error", "message": "NEXUS Engine Busy."})
 
-# 🔥 YAHAN HAI AUTO-DELETE LOGIC
+#  AUTO-DELETE LOGIC (Same)
 @app.route("/files/<filename>")
 def serve_file(filename):
     filepath = os.path.join(DOWNLOAD_FOLDER, filename)
@@ -54,7 +69,7 @@ def serve_file(filename):
         try:
             if os.path.exists(filepath):
                 os.remove(filepath)
-                print(f"🔥 File deleted: {filename}")
+                print(f" File deleted: {filename}")
         except Exception as e:
             print(f"Error: {e}")
         return response
