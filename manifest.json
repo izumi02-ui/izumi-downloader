@@ -1,0 +1,15 @@
+{
+  "name": "NEXUS Downloader",
+  "short_name": "NEXUS",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#05050a",
+  "theme_color": "#0f1020",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3502/3502458.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
