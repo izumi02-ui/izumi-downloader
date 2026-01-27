@@ -3,16 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>NEXUS Downloader</title>
+
+<title>IZUMI — Advanced Downloader System</title>
+<meta name="description" content="NEXUS System: High-speed Instagram media fetching engine.">
 
 <link rel="manifest" href="/manifest.json">
-
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0f1020">
 
 <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3502/3502458.png">
+<meta property="og:title" content="IZUMI Advanced Downloader">
+<meta property="og:description" content="Download high-quality Instagram media instantly via Nexus Engine.">
 
 <style>
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -29,6 +32,7 @@ body {
   overflow: hidden;
 }
 
+/*  Professional Splash Screen */
 #splash {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
@@ -42,28 +46,29 @@ body {
 }
 
 .splash-logo {
-  font-size: 40px;
+  font-size: 42px;
   font-weight: 800;
-  letter-spacing: 4px;
-  background: linear-gradient(135deg, #fff, #7b5cff);
+  letter-spacing: 5px;
+  background: linear-gradient(135deg, #fff, #8f7bff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: pulse 1.5s infinite alternate;
 }
 
 @keyframes pulse {
-  from { transform: scale(1); opacity: 0.8; }
-  to { transform: scale(1.1); opacity: 1; }
+  from { transform: scale(1); opacity: 0.7; }
+  to { transform: scale(1.08); opacity: 1; }
 }
 
 .card {
   width: 92%;
   max-width: 420px;
   background: rgba(20,20,40,0.55);
-  backdrop-filter: blur(20px);
-  border-radius: 22px;
-  padding: 28px;
-  box-shadow: 0 0 40px rgba(120,90,255,0.25);
+  backdrop-filter: blur(25px);
+  border-radius: 24px;
+  padding: 30px;
+  box-shadow: 0 0 50px rgba(120,90,255,0.2);
+  border: 1px solid rgba(255,255,255,0.05);
   text-align: center;
   animation: fadeIn .8s ease;
   z-index: 1;
@@ -75,55 +80,56 @@ body {
 }
 
 .logo {
-  font-size: 32px;
+  font-size: 38px;
   font-weight: 800;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   margin-bottom: 5px;
+  text-transform: uppercase;
 }
 
 .logo span { color: #8f7bff; }
 
 .subtitle {
-  font-size: 12px;
-  letter-spacing: 1px;
-  opacity: .7;
-  margin-bottom: 25px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  opacity: .5;
+  margin-bottom: 30px;
   text-transform: uppercase;
 }
 
 input {
   width: 100%;
-  padding: 16px;
-  border-radius: 14px;
+  padding: 18px;
+  border-radius: 15px;
   border: 1px solid rgba(255,255,255,0.1);
   outline: none;
   background: rgba(0,0,0,.4);
   color: white;
   font-size: 14px;
-  margin-bottom: 14px;
+  margin-bottom: 15px;
   transition: 0.3s;
 }
 
-input:focus { border-color: #7b5cff; box-shadow: 0 0 15px rgba(123, 92, 255, 0.3); }
+input:focus { border-color: #8f7bff; box-shadow: 0 0 20px rgba(143, 123, 255, 0.2); }
 
 button {
   width: 100%;
-  padding: 14px;
-  border-radius: 14px;
+  padding: 15px;
+  border-radius: 15px;
   border: none;
   font-weight: 700;
   font-size: 15px;
   cursor: pointer;
   color: white;
   background: linear-gradient(135deg, #7b5cff, #9b6dff);
-  box-shadow: 0 0 20px rgba(130,100,255,.4);
+  box-shadow: 0 10px 20px rgba(123,92,255,0.3);
   transition: .3s;
 }
 
-button:active { transform: scale(0.97); }
+button:active { transform: scale(0.96); }
 
 .status {
-  margin-top: 18px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -133,32 +139,35 @@ button:active { transform: scale(0.97); }
 .hidden { display: none; }
 
 .loader {
-  width: 35px;
-  height: 35px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  border: 3px solid rgba(255,255,255,.1);
+  border: 3px solid rgba(255,255,255,.05);
   border-top: 3px solid #8f7bff;
   animation: spin .9s linear infinite;
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-a {
+#result a {
   display: inline-block;
-  margin-top: 15px;
-  color: #9b8bff;
+  margin-top: 20px;
+  color: #fff;
   text-decoration: none;
   font-weight: 600;
-  padding: 10px 20px;
-  border: 1px dashed #7b5cff;
-  border-radius: 10px;
+  padding: 14px 28px;
+  background: rgba(143, 123, 255, 0.2);
+  border: 1px solid #8f7bff;
+  border-radius: 14px;
+  transition: 0.3s;
 }
 
 .footer {
-  margin-top: 25px;
-  font-size: 11px;
+  margin-top: 30px;
+  font-size: 9px;
   opacity: .4;
-  letter-spacing: 0.5px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 </style>
 </head>
@@ -166,28 +175,29 @@ a {
 <body>
 
 <div id="splash">
-  <div class="splash-logo">NEXUS</div>
-  <p style="font-size: 10px; opacity: 0.5; margin-top: 15px;">INITIALIZING ENGINE...</p>
+  <div class="splash-logo">IZUMI</div>
+  <p style="font-size: 8px; opacity: 0.4; letter-spacing: 3px; margin-top: 20px;">NEXUS SYSTEM INITIALIZING...</p>
 </div>
 
 <div class="card">
-  <div class="logo">NEXUS<span>.</span></div>
-  <div class="subtitle">Next-Gen Media Downloader</div>
+  <div class="logo">IZUMI<span>.</span></div>
+  <div class="subtitle">Nexus Advanced Media Downloader</div>
 
-  <input id="linkInput" placeholder="Paste link here..." autocomplete="off">
-  <button onclick="startDownload()">DOWNLOAD NOW</button>
+  <input id="linkInput" placeholder="Paste Instagram URL here..." autocomplete="off">
+  <button onclick="startDownload()">FETCH MEDIA</button>
 
   <div id="statusBox" class="status hidden">
     <div class="loader"></div>
-    <p id="statusText" style="font-size: 13px;">Nexus is working...</p>
+    <p id="statusText" style="font-size: 12px; opacity: 0.9;">Connecting to engine...</p>
   </div>
 
   <div id="result"></div>
 
-  <div class="footer">ENGINE: IZUMI • DESIGNED BY ROHIT</div>
+  <div class="footer">SYSTEM : NEXUS • CORE : IZUMI • DESIGNED BY : ROHIT</div>
 </div>
 
 <script>
+// Splash Control
 window.addEventListener('load', () => {
   setTimeout(() => {
     const splash = document.getElementById('splash');
@@ -210,11 +220,16 @@ async function startDownload() {
   resultBox.innerHTML = "";
 
   if (!link) {
-    alert("Please enter a valid link!");
+    showStatus("🚫 Error: Please enter a valid URL.");
     return;
   }
 
-  showStatus(" Nexus is fetching data...");
+  if (!link.includes("instagram.com")) {
+    showStatus("🚫 Error: Unsupported platform. Use Instagram.");
+    return;
+  }
+
+  showStatus(" Izumi is fetching data...");
 
   try {
     const res = await fetch("/api/download", {
@@ -226,15 +241,21 @@ async function startDownload() {
     const data = await res.json();
 
     if (data.status === "success") {
-      showStatus("✅ Ready for you!");
-      resultBox.innerHTML = `<a href="${data.link}" download>📥 Click to Save Video</a>`;
+      showStatus("✅ Success: Media engine ready.");
+      resultBox.innerHTML = `<a href="${data.link}" download>📥 DOWNLOAD NOW</a>`;
     } else {
-      showStatus("🚫 Error: " + (data.message || "Failed to fetch media"));
+      let errorMsg = data.message.toLowerCase();
+      if (errorMsg.includes("private")) {
+        showStatus("🔒 Error: Private Account detected.");
+      } else if (errorMsg.includes("not found")) {
+        showStatus("🚫 Error: Content not found.");
+      } else {
+        showStatus("⚠️ Request Failed: " + data.message);
+      }
     }
 
   } catch (e) {
-    showStatus("🚫 Service Unavailable. Please try again.");
-    console.error("Download Error:", e);
+    showStatus("🚀 Izumi Server Busy. Retrying in 60s...");
   }
 }
 </script>
