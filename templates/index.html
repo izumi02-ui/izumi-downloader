@@ -33,15 +33,28 @@ body {
   color: white; overflow: hidden;
 }
 
-/* 🍔 Sidebar & Menu Button */
+/* 🍔 Sidebar & Menu Button - UPDATED WITH GLOW & POSITION */
 .menu-btn {
-  position: absolute; top: 25px; right: 25px;
-  cursor: pointer; z-index: 1001; padding: 10px;
+  position: absolute; 
+  top: 45px; /* Thoda niche kar diya */
+  right: 25px;
+  cursor: pointer; 
+  z-index: 1001; 
+  padding: 10px;
+  transition: all 0.3s ease;
+  border-radius: 8px;
 }
 .menu-btn div {
   width: 22px; height: 2px; background: white;
   margin: 5px 0; transition: 0.3s; border-radius: 2px;
 }
+
+/* Glow Effect on Hover/Touch */
+.menu-btn:hover div {
+  background-color: #8f7bff;
+  box-shadow: 0 0 12px #8f7bff, 0 0 20px #8f7bff;
+}
+
 .sidebar {
   position: fixed; top: 0; right: -300px;
   width: 280px; height: 100%;
@@ -215,7 +228,6 @@ async function startDownload() {
       showStatus("⚠️ " + data.message);
     }
   } catch (e) {
-    // 🛡️ ADVANCED ERROR HANDLING ADDED HERE
     showStatus("🚀 Instagram IP Limited. Please wait 60s and try again.");
     console.error("Nexus Engine Error Details:", e);
   }
