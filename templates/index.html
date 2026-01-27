@@ -29,7 +29,6 @@ body {
   overflow: hidden;
 }
 
-/*  Splash Screen Animation */
 #splash {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
@@ -180,7 +179,7 @@ a {
 
   <div id="statusBox" class="status hidden">
     <div class="loader"></div>
-    <p id="statusText" style="font-size: 13px;">Izumi is working...</p>
+    <p id="statusText" style="font-size: 13px;">Nexus is working...</p>
   </div>
 
   <div id="result"></div>
@@ -189,7 +188,6 @@ a {
 </div>
 
 <script>
-// Splash Screen Logic
 window.addEventListener('load', () => {
   setTimeout(() => {
     const splash = document.getElementById('splash');
@@ -212,7 +210,7 @@ async function startDownload() {
   resultBox.innerHTML = "";
 
   if (!link) {
-    alert("Bhai link toh dalo!");
+    alert("Please enter a valid link!");
     return;
   }
 
@@ -231,11 +229,12 @@ async function startDownload() {
       showStatus("✅ Ready for you!");
       resultBox.innerHTML = `<a href="${data.link}" download>📥 Click to Save Video</a>`;
     } else {
-      showStatus("❌ " + data.message);
+      showStatus("🚫 Error: " + (data.message || "Failed to fetch media"));
     }
 
   } catch (e) {
-    showStatus("❌ Connection Error");
+    showStatus("🚫 Service Unavailable. Please try again.");
+    console.error("Download Error:", e);
   }
 }
 </script>
