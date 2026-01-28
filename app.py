@@ -14,7 +14,7 @@ TEMP_COOKIES_TXT = "/tmp/instagram_cookies.txt"
 if not os.path.exists(DOWNLOAD_FOLDER):
     os.makedirs(DOWNLOAD_FOLDER)
 
-# 🍪 JSON to Netscape Converter (For yt-dlp)
+# 🍪 JSON to Netscape Converter (Zaruri hai yt-dlp ke liye)
 def prepare_cookies():
     if os.path.exists(JSON_COOKIES):
         try:
@@ -28,6 +28,7 @@ def prepare_cookies():
                     flag = "TRUE" if domain.startswith('.') else "FALSE"
                     path = c.get('path', '/')
                     secure = "TRUE" if c.get('secure') else "FALSE"
+                    # Expiration date agar missing ho toh default 0
                     expiry = int(c.get('expirationDate', 0))
                     name = c.get('name', '')
                     value = c.get('value', '')
@@ -36,6 +37,7 @@ def prepare_cookies():
         except Exception as e:
             print(f"Cookie Conversion Error: {e}")
             return None
+    print("⚠️ Warning: cookies.json file nahi mili! Upload karo.")
     return None
 
 @app.route("/")
@@ -54,9 +56,10 @@ def download_api():
     output_path = os.path.join(DOWNLOAD_FOLDER, unique_name)
 
     try:
+        # 🚀 Advanced Nexus Engine Command (Optimized for Render Free Tier)
         cmd = [
             "yt-dlp",
-            "-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best",
+            "-f", "best[ext=mp4]", # 👈 FFmpeg ke bina HQ MP4 download karne ke liye
             "--no-check-certificate",
             "--no-playlist",
             "--geo-bypass",
@@ -65,22 +68,27 @@ def download_api():
             "-o", output_path
         ]
 
+        # 🍪 Cookies check aur inject
         cookie_path = prepare_cookies()
         if cookie_path:
             cmd.extend(["--cookies", cookie_path])
         
         cmd.append(video_url)
-        subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+        
+        # Engine execution with logs for Render debugging
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
 
         if os.path.exists(output_path):
             return jsonify({"status": "success", "link": f"/files/{unique_name}"})
         else:
-            return jsonify({"status": "error", "message": "Instagram block ya link error."})
+            print(f"Engine Log: {result.stderr}")
+            return jsonify({"status": "error", "message": "Instagram ne block kiya ya link galat hai."})
 
     except Exception as e:
+        print(f"System Error: {str(e)}")
         return jsonify({"status": "error", "message": "Nexus Engine Busy."})
 
-# 🔥 AUTO-DELETE LOGIC (YAHAN HAI BHAI)
+# 🔥 AUTO-DELETE LOGIC (STAYS SAME)
 @app.route("/files/<filename>")
 def serve_file(filename):
     filepath = os.path.join(DOWNLOAD_FOLDER, filename)
