@@ -1,24 +1,22 @@
 {
-  "name": "NEXUS SYSTEM",
+  "name": "Nexus",
   "short_name": "Nexus",
-  "description": "High-Speed Media Saving System",
+  "description": "High-Speed Instagram Media Saver",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0f1020",
-  "theme_color": "#0f1020",
+  "background_color": "#000000",
+  "theme_color": "#000000",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "https://raw.githubusercontent.com/izumi02-ui/izumi-downloader/main/nexus_logo.png",
+      "src": "https://cdn-icons-png.flaticon.com/512/3955/3955024.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
-      "src": "https://raw.githubusercontent.com/izumi02-ui/izumi-downloader/main/nexus_logo.png",
+      "src": "https://cdn-icons-png.flaticon.com/512/3955/3955024.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }
