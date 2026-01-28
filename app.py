@@ -2,15 +2,41 @@ from flask import Flask, request, jsonify, send_from_directory, render_template,
 import os
 import subprocess
 import uuid
+import json
 
 app = Flask(__name__)
 
 # 🔹 Folder & Cookies Setup
 DOWNLOAD_FOLDER = "/tmp/downloads"
-COOKIES_FILE = "instagram_cookies.txt" # Is file ko upload karna mat bhoolna
+JSON_COOKIES = "cookies.json" 
+TEMP_COOKIES_TXT = "/tmp/instagram_cookies.txt"
 
 if not os.path.exists(DOWNLOAD_FOLDER):
     os.makedirs(DOWNLOAD_FOLDER)
+
+# 🍪 JSON to Netscape Converter (For yt-dlp)
+def prepare_cookies():
+    if os.path.exists(JSON_COOKIES):
+        try:
+            with open(JSON_COOKIES, 'r') as f:
+                cookies_data = json.load(f)
+            
+            with open(TEMP_COOKIES_TXT, 'w') as f:
+                f.write("# Netscape HTTP Cookie File\n")
+                for c in cookies_data:
+                    domain = c.get('domain', '')
+                    flag = "TRUE" if domain.startswith('.') else "FALSE"
+                    path = c.get('path', '/')
+                    secure = "TRUE" if c.get('secure') else "FALSE"
+                    expiry = int(c.get('expirationDate', 0))
+                    name = c.get('name', '')
+                    value = c.get('value', '')
+                    f.write(f"{domain}\t{flag}\t{path}\t{secure}\t{expiry}\t{name}\t{value}\n")
+            return TEMP_COOKIES_TXT
+        except Exception as e:
+            print(f"Cookie Conversion Error: {e}")
+            return None
+    return None
 
 @app.route("/")
 def home():
@@ -28,42 +54,33 @@ def download_api():
     output_path = os.path.join(DOWNLOAD_FOLDER, unique_name)
 
     try:
-        # 🚀 Advanced Nexus Engine Command
         cmd = [
             "yt-dlp",
-            "-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best", # Best MP4 quality logic
+            "-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best",
             "--no-check-certificate",
             "--no-playlist",
             "--geo-bypass",
-            # Fresh Mobile User-Agent to avoid detection
-            "--user-agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1",
+            "--user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
             "--referer", "https://www.instagram.com/",
             "-o", output_path
         ]
 
-        # 🍪 Add cookies if the file exists
-        if os.path.exists(COOKIES_FILE):
-            cmd.extend(["--cookies", COOKIES_FILE])
+        cookie_path = prepare_cookies()
+        if cookie_path:
+            cmd.extend(["--cookies", cookie_path])
         
         cmd.append(video_url)
-
-        # Engine execution with timeout
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+        subprocess.run(cmd, capture_output=True, text=True, timeout=120)
 
         if os.path.exists(output_path):
-            return jsonify({
-                "status": "success",
-                "link": f"/files/{unique_name}"
-            })
+            return jsonify({"status": "success", "link": f"/files/{unique_name}"})
         else:
-            print(f"Engine Log: {result.stderr}") # Logs for debugging in Render
-            return jsonify({"status": "error", "message": "Instagram ne block kiya ya link galat hai."})
+            return jsonify({"status": "error", "message": "Instagram block ya link error."})
 
     except Exception as e:
-        print(f"System Error: {str(e)}")
-        return jsonify({"status": "error", "message": "Nexus Engine Busy. Try again!"})
+        return jsonify({"status": "error", "message": "Nexus Engine Busy."})
 
-# 🔥 AUTO-DELETE LOGIC (STAYS SAME)
+# 🔥 AUTO-DELETE LOGIC (YAHAN HAI BHAI)
 @app.route("/files/<filename>")
 def serve_file(filename):
     filepath = os.path.join(DOWNLOAD_FOLDER, filename)
@@ -83,3 +100,4 @@ def serve_file(filename):
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+    
