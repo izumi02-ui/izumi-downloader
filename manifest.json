@@ -4,19 +4,21 @@
   "description": "High-Speed Media Saving System",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "background_color": "#0f1020",
+  "theme_color": "#0f1020",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/3955/3955024.png",
+      "src": "https://raw.githubusercontent.com/izumi02-ui/izumi-downloader/main/nexus_logo.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/3955/3955024.png",
+      "src": "https://raw.githubusercontent.com/izumi02-ui/izumi-downloader/main/nexus_logo.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
