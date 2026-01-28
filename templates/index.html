@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
+<link rel="manifest" href="/manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0f1020">
+<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/izumi02-ui/izumi-downloader/refs/heads/main/New%20Project%206%20%5B43F93B0%5D.png">
+
 <title>Nexus — Advanced Media Saving System</title>
 <meta name="description" content="NEXUS'S System: High-speed Instagram media fetching with I engine.">
 
@@ -13,15 +20,9 @@
 <meta property="og:type" content="website">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/izumi02-ui/izumi-downloader/refs/heads/main/New%20Project%206%20%5B43F93B0%5D.png">
-
-<link rel="manifest" href="/manifest.json">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0f1020">
-<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/izumi02-ui/izumi-downloader/refs/heads/main/New%20Project%206%20%5B43F93B0%5D.png">
 
 <style>
 /* 🏎️ 120FPS Performance Layer */
@@ -30,12 +31,10 @@
 body {
   margin: 0; min-height: 100vh;
   display: flex; align-items: center; justify-content: center;
-  /* Fixed Background: Ye tumhara original gradient hai */
   background: radial-gradient(circle at top, #0f1020, #05050a) no-repeat center center fixed;
   background-size: cover;
   font-family: 'Poppins', system-ui, sans-serif;
   color: white; overflow: hidden;
-  /* Prevent background shift on mobile */
   position: fixed; width: 100%; height: 100%;
 }
 
@@ -43,7 +42,6 @@ body {
 .menu-btn {
   position: absolute; top: 25px; right: 25px;
   cursor: pointer; z-index: 1001; padding: 10px;
-  /* High refresh rate sync */
   transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
 }
@@ -52,13 +50,11 @@ body {
   margin: 5px 0; transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 2px;
 }
 
-/* Sidebar Active State with GPU Acceleration */
 .sidebar {
   position: fixed; top: 0; right: 0;
   width: 280px; height: 100%;
   background: rgba(10, 10, 25, 0.95); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
   z-index: 1000; 
-  /* 120fps translate physics */
   transform: translate3d(100%, 0, 0);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   padding: 80px 20px 20px; border-left: 1px solid rgba(255,255,255,0.05);
@@ -67,7 +63,6 @@ body {
 .sidebar.active { transform: translate3d(0, 0, 0); }
 .sidebar h2 { font-size: 16px; letter-spacing: 2px; color: #8f7bff; margin-bottom: 20px; text-transform: uppercase; }
 
-/* 📜 History Items - FIXED CONTRAST */
 .history-list { 
   list-style: none; padding: 0; max-height: 70vh; 
   overflow-y: auto; -webkit-overflow-scrolling: touch; 
@@ -77,11 +72,10 @@ body {
   border-radius: 12px; margin-bottom: 10px; font-size: 11px;
   display: flex; justify-content: space-between; align-items: center;
   border: 1px solid rgba(255,255,255,0.08);
-  transform: translateZ(0); /* Item scroll smoothness */
+  transform: translateZ(0);
 }
 .history-item a { color: #8f7bff; text-decoration: none; font-weight: 700; }
 
-/* Splash & Card CSS */
 #splash {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: #05050a; display: flex; flex-direction: column;
@@ -96,7 +90,6 @@ body {
 }
 @keyframes pulse { from { transform: scale(1); opacity: 0.7; } to { transform: scale(1.08); opacity: 1; } }
 
-/* 🛡️ MAIN CARD - Restored Original Look */
 .card {
   width: 92%; max-width: 420px;
   background: rgba(20,20,40,0.55); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
@@ -174,7 +167,6 @@ button:active { transform: scale(0.96); }
 
 <script>
 window.addEventListener('load', () => {
-  // Sync splash removal with GPU refresh
   window.requestAnimationFrame(() => {
     setTimeout(() => {
       const splash = document.getElementById('splash');
@@ -189,7 +181,6 @@ window.addEventListener('load', () => {
 });
 
 function toggleSidebar() {
-  // Use requestAnimationFrame for buttery smooth sidebar movement
   window.requestAnimationFrame(() => {
     document.getElementById('sidebar').classList.toggle('active');
   });
