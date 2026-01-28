@@ -40,6 +40,11 @@ def prepare_cookies():
     print("⚠️ Warning: cookies.json file nahi mili! Upload karo.")
     return None
 
+# 📱 Manifest Route (PWA Setup - Naya Address)
+@app.route('/manifest.json')
+def serve_manifest():
+    return send_from_directory(os.getcwd(), 'manifest.json')
+
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -108,4 +113,3 @@ def serve_file(filename):
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
-    
