@@ -9,20 +9,20 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0f1020">
-<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/izumi02-ui/izumi-downloader/refs/heads/main/New%20Project%206%20%5B43F93B0%5D.png">
+<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/izumi02-ui/izumi-downloader/main/nexus_logo.png">
 
 <title>Nexus — Advanced Media Saving System</title>
 <meta name="description" content="NEXUS'S System: High-speed Instagram media fetching with I engine.">
 
 <meta property="og:title" content="NEXUS : MEDIA SAVING SYSTEM">
 <meta property="og:description" content="Download high-quality Instagram media instantly via Nexus's Engine.">
-<meta property="og:image" content="https://raw.githubusercontent.com/izumi02-ui/izumi-downloader/refs/heads/main/New%20Project%206%20%5B43F93B0%5D.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/izumi02-ui/izumi-downloader/main/nexus_logo.png">
 <meta property="og:type" content="website">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/izumi02-ui/izumi-downloader/refs/heads/main/New%20Project%206%20%5B43F93B0%5D.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/izumi02-ui/izumi-downloader/main/nexus_logo.png">
 
 <style>
 /* 🏎️ 120FPS Performance Layer */
@@ -36,6 +36,13 @@ body {
   font-family: 'Poppins', system-ui, sans-serif;
   color: white; overflow: hidden;
   position: fixed; width: 100%; height: 100%;
+}
+
+/* Overlay for outside click */
+#overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4); z-index: 999;
+  display: none; opacity: 0; transition: opacity 0.3s ease;
 }
 
 /* 🍔 Sidebar & Menu Button - FIXED */
@@ -135,6 +142,8 @@ button:active { transform: scale(0.96); }
 </head>
 <body>
 
+<div id="overlay" onclick="toggleSidebar()"></div>
+
 <div id="splash">
   <div class="splash-logo">IZUMI</div>
   <p style="font-size: 8px; opacity: 0.4; letter-spacing: 3px; margin-top: 20px;">NEXUS SYSTEM INITIALIZING...</p>
@@ -181,8 +190,18 @@ window.addEventListener('load', () => {
 });
 
 function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  
   window.requestAnimationFrame(() => {
-    document.getElementById('sidebar').classList.toggle('active');
+    sidebar.classList.toggle('active');
+    if(sidebar.classList.contains('active')) {
+      overlay.style.display = 'block';
+      setTimeout(() => overlay.style.opacity = '1', 10);
+    } else {
+      overlay.style.opacity = '0';
+      setTimeout(() => overlay.style.display = 'none', 300);
+    }
   });
 }
 
