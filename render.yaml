@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: nexus-izumi
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    buildpacks:
+      - url: heroku/python
+      - url: https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git
+      
