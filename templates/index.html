@@ -13,93 +13,69 @@
 <meta property="og:type" content="website">
 
 <style>
-/* 🏎️ FPS Optimization Global */
-* { 
-  box-sizing: border-box; 
-  -webkit-tap-highlight-color: transparent;
-  /* Hardware Acceleration Trigger */
-  transform: translateZ(0);
-}
+/* 🏎️ GPU Engine & Core Reset */
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; transform: translateZ(0); }
 
 body {
-  margin: 0; min-height: 100vh;
+  margin: 0; padding: 0; min-height: 100vh;
   display: flex; align-items: center; justify-content: center;
-  background: radial-gradient(circle at top, #0f1020, #05050a);
+  background: radial-gradient(circle at top, #0f1020, #05050a) !important;
   font-family: 'Poppins', system-ui, sans-serif;
   color: white; overflow: hidden;
-  /* Anti-lag mobile fix */
   position: fixed; width: 100%; height: 100%;
 }
 
-/* 🍔 Sidebar & Menu Button - SMART GLOW */
+/* 🍔 Sidebar & Menu Button - FIXED ALIGNMENT */
 .menu-btn {
-  position: absolute; 
-  top: 45px; 
-  right: 25px;
-  cursor: pointer; 
-  z-index: 1001; 
-  padding: 10px;
-  /* Sync with display refresh rate */
+  position: absolute; top: 45px; right: 25px;
+  cursor: pointer; z-index: 1001; padding: 10px;
   transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 8px;
   will-change: transform;
 }
 .menu-btn div {
   width: 22px; height: 2px; background: white;
   margin: 5px 0; transition: 0.3s; border-radius: 2px;
 }
-
-/* Jab sidebar active ho, tabhi glow karega */
 .menu-btn.active div {
   background-color: #8f7bff;
   box-shadow: 0 0 12px #8f7bff, 0 0 20px #8f7bff;
 }
 
-/* Overlay to detect click outside */
 .overlay {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.4); z-index: 999;
-  display: none; 
-  transition: opacity 0.3s ease;
-  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  background: rgba(0,0,0,0.6); z-index: 999;
+  display: none; opacity: 0; transition: opacity 0.3s ease;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
 }
 .overlay.active { display: block; opacity: 1; }
 
 .sidebar {
   position: fixed; top: 0; right: -300px;
   width: 280px; height: 100%;
-  background: rgba(10, 10, 25, 0.95); backdrop-filter: blur(25px);
-  z-index: 1000; 
-  /* Using Translate3D for 120fps physics */
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  background: rgba(10, 10, 25, 0.98); backdrop-filter: blur(25px);
+  z-index: 1000; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   padding: 80px 20px 20px; border-left: 1px solid rgba(255,255,255,0.05);
   will-change: transform;
 }
-/* Smooth movement fix */
 .sidebar.active { transform: translate3d(-300px, 0, 0); }
 .sidebar h2 { font-size: 16px; letter-spacing: 2px; color: #8f7bff; margin-bottom: 20px; text-transform: uppercase; }
 
-/* Rest of the UI Card CSS */
-.history-list { 
-  list-style: none; padding: 0; max-height: 70vh; 
-  overflow-y: auto; 
-  -webkit-overflow-scrolling: touch; /* Butter scroll for iOS/Android */
-}
+/* 📜 History Items - FIXED CONTRAST */
+.history-list { list-style: none; padding: 0; max-height: 70vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 .history-item {
-  background: rgba(255,255,255,0.03); padding: 12px;
+  background: rgba(255,255,255,0.05); padding: 12px;
   border-radius: 12px; margin-bottom: 10px; font-size: 11px;
   display: flex; justify-content: space-between; align-items: center;
-  border: 1px solid rgba(255,255,255,0.05);
-  /* GPU layer for smooth scroll */
-  transform: translateZ(0);
+  border: 1px solid rgba(255,255,255,0.08); transform: translateZ(0);
 }
-.history-item a { color: #8f7bff; text-decoration: none; font-weight: 700; }
+.history-item a { color: #8f7bff; text-decoration: none; font-weight: 700; text-transform: uppercase; }
 
+/* 💎 Splash Engine */
 #splash {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: #05050a; display: flex; flex-direction: column;
   align-items: center; justify-content: center; z-index: 9999;
-  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
+  transition: opacity 0.8s ease, visibility 0.8s;
 }
 .splash-logo {
   font-size: 42px; font-weight: 800; letter-spacing: 5px;
@@ -109,56 +85,58 @@ body {
 }
 @keyframes pulse { from { transform: scale(1); opacity: 0.7; } to { transform: scale(1.08); opacity: 1; } }
 
+/* 🛡️ Main Card - RESTORED PREMIUM LOOK */
 .card {
-  width: 92%; max-width: 420px;
-  background: rgba(20,20,40,0.55); backdrop-filter: blur(25px);
-  border-radius: 24px; padding: 30px;
-  box-shadow: 0 0 50px rgba(120,90,255,0.2);
-  border: 1px solid rgba(255,255,255,0.05); text-align: center;
+  width: 90%; max-width: 400px;
+  background: rgba(20,20,40,0.65) !important; /* Fixed Gray Background */
+  backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+  border-radius: 28px; padding: 40px 30px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px rgba(120,90,255,0.15);
+  border: 1px solid rgba(255,255,255,0.1); text-align: center;
   animation: fadeIn .8s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1;
   will-change: transform, opacity;
 }
-@keyframes fadeIn { from {opacity:0; transform: translate3d(0, 20px, 0);} to {opacity:1; transform: translate3d(0, 0, 0);} }
+@keyframes fadeIn { from {opacity:0; transform: translate3d(0, 30px, 0);} to {opacity:1; transform: translate3d(0, 0, 0);} }
 
-.logo { font-size: 38px; font-weight: 800; letter-spacing: 3px; margin-bottom: 5px; text-transform: uppercase; }
+.logo { font-size: 38px; font-weight: 800; letter-spacing: 3px; margin-bottom: 5px; text-transform: uppercase; color: #fff; }
 .logo span { color: #8f7bff; }
 .subtitle { font-size: 10px; letter-spacing: 2px; opacity: .5; margin-bottom: 30px; text-transform: uppercase; }
 
 input {
   width: 100%; padding: 18px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);
   outline: none; background: rgba(0,0,0,.4); color: white; font-size: 14px; margin-bottom: 15px;
-  transition: 0.3s ease;
+  transition: 0.3s;
 }
-input:focus { border-color: #8f7bff; }
+input:focus { border-color: #8f7bff; background: rgba(0,0,0,0.5); }
 
 button {
-  width: 100%; padding: 15px; border-radius: 15px; border: none;
+  width: 100%; padding: 18px; border-radius: 16px; border: none;
   font-weight: 700; font-size: 15px; cursor: pointer; color: white;
   background: linear-gradient(135deg, #7b5cff, #9b6dff);
-  box-shadow: 0 10px 20px rgba(123,92,255,0.3); 
+  box-shadow: 0 10px 25px rgba(123,92,255,0.3); 
   transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   will-change: transform;
 }
 button:active { transform: scale(0.96); }
 
-.status { margin-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.status { margin-top: 25px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
 .hidden { display: none; }
 .loader { width: 32px; height: 32px; border-radius: 50%; border: 3px solid rgba(255,255,255,.05); border-top: 3px solid #8f7bff; animation: spin .9s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 #result a {
   display: inline-block; margin-top: 20px; color: #fff; text-decoration: none; font-weight: 600;
-  padding: 14px 28px; background: rgba(143, 123, 255, 0.2); border: 1px solid #8f7bff; border-radius: 14px;
+  padding: 15px 30px; background: rgba(143, 123, 255, 0.15); border: 1px solid #8f7bff; border-radius: 14px;
   animation: fadeIn 0.4s ease;
 }
-.footer { margin-top: 30px; font-size: 9px; opacity: .4; letter-spacing: 1.5px; text-transform: uppercase; }
+.footer { margin-top: 35px; font-size: 9px; opacity: .4; letter-spacing: 1.5px; text-transform: uppercase; }
 </style>
 </head>
 <body>
 
 <div id="splash">
   <div class="splash-logo">IZUMI</div>
-  <p style="font-size: 8px; opacity: 0.4; letter-spacing: 3px; margin-top: 20px;">ADAPTIVE FPS ENGINE INITIALIZING...</p>
+  <p style="font-size: 8px; opacity: 0.4; letter-spacing: 3px; margin-top: 20px;">ADAPTIVE FPS ENGINE ACTIVE</p>
 </div>
 
 <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
@@ -189,17 +167,16 @@ button:active { transform: scale(0.96); }
 </div>
 
 <script>
-// ✨ GPU Optimized Load
 window.addEventListener('load', () => {
   window.requestAnimationFrame(() => {
-      setTimeout(() => {
-        const splash = document.getElementById('splash');
-        splash.style.opacity = '0';
-        setTimeout(() => { 
-            splash.style.visibility = 'hidden'; 
-            splash.style.display = 'none';
-        }, 800);
-      }, 2000);
+    setTimeout(() => {
+      const splash = document.getElementById('splash');
+      splash.style.opacity = '0';
+      setTimeout(() => { 
+        splash.style.visibility = 'hidden'; 
+        splash.style.display = 'none';
+      }, 800);
+    }, 2000);
   });
   renderHistory();
 });
@@ -209,7 +186,6 @@ const menuBtn = document.getElementById('menuBtn');
 const overlay = document.getElementById('overlay');
 
 function toggleSidebar() {
-  // Sync with refresh rate for 120fps feel
   window.requestAnimationFrame(() => {
     sidebar.classList.toggle('active');
     menuBtn.classList.toggle('active');
