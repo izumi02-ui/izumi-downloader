@@ -25,44 +25,41 @@ def download_api():
     output_path = os.path.join(DOWNLOAD_FOLDER, unique_name)
 
     try:
-        # Permanent Solution Strategy:
-        # 1. Use a fresh Mobile User-Agent
-        # 2. Force basic extraction to avoid login walls
+        # Nexus Engine: Anti-Block Strategy
         cmd = [
             "yt-dlp",
-            "-f", "best",
+            "-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best",
             "--no-check-certificate",
-            "--user-agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 16_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Mobile/15E148 Safari/604.1",
+            # Mobile Safari User Agent
+            "--user-agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 17_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Mobile/15E148 Safari/604.1",
+            # Add Referer to fool Instagram
+            "--referer", "https://www.instagram.com/",
+            "--no-playlist",
             "--geo-bypass",
+            # Force basic extraction to avoid JS challenges
+            "--extractor-args", "instagram:fast",
             "-o", output_path,
             video_url
         ]
         
-        subprocess.run(cmd, check=True, timeout=120)
+        # Capture error output for debugging
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
 
         if os.path.exists(output_path):
             return jsonify({"status": "success", "link": f"/files/{unique_name}"})
         else:
-            return jsonify({"status": "error", "message": "File download nahi hui."})
+            # Agar file nahi bani toh error log check karein
+            print(f"YT-DLP Error: {result.stderr}")
+            return jsonify({"status": "error", "message": "Instagram ne server block kar diya hai. Thodi der baad try karein."})
 
     except Exception as e:
-        return jsonify({"status": "error", "message": "Instagram ne block kiya ya link galat hai."})
+        print(f"System Error: {str(e)}")
+        return jsonify({"status": "error", "message": "Nexus Engine Busy (IP Blocked). Try later!"})
 
 @app.route("/files/<filename>")
 def serve_file(filename):
     filepath = os.path.join(DOWNLOAD_FOLDER, filename)
-
-    @after_this_request
-    def remove_file(response):
-        try:
-            if os.path.exists(filepath):
-                os.remove(filepath)
-        except Exception:
-            pass
-        return response
-
     return send_from_directory(DOWNLOAD_FOLDER, filename, as_attachment=True)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
-    
