@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="/manifest.json?v=final">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -18,14 +18,9 @@
 <meta property="og:description" content="Download high-quality Instagram media instantly via Nexus's Engine.">
 <meta property="og:image" content="https://raw.githubusercontent.com/izumi02-ui/izumi-downloader/refs/heads/main/New%20Project%206%20%5B43F93B0%5D.png">
 <meta property="og:type" content="website">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/izumi02-ui/izumi-downloader/refs/heads/main/New%20Project%206%20%5B43F93B0%5D.png">
 
 <style>
-/* 🏎️ 120FPS Performance Layer */
+/* 🏎️ PERFORMANCE LAYER (SAME) */
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 body {
@@ -38,95 +33,75 @@ body {
   position: fixed; width: 100%; height: 100%;
 }
 
-/* Overlay for outside click */
 #overlay {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0,0,0,0.4); z-index: 999;
   display: none; opacity: 0; transition: opacity 0.3s ease;
 }
 
-/* 🍔 Sidebar & Menu Button - FIXED */
 .menu-btn {
   position: absolute; top: 25px; right: 25px;
   cursor: pointer; z-index: 1001; padding: 10px;
-  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: transform;
 }
-.menu-btn div {
-  width: 22px; height: 2px; background: white;
-  margin: 5px 0; transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 2px;
-}
+.menu-btn div { width: 22px; height: 2px; background: white; margin: 5px 0; border-radius: 2px; }
 
 .sidebar {
   position: fixed; top: 0; right: 0;
   width: 280px; height: 100%;
   background: rgba(10, 10, 25, 0.95); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-  z-index: 1000; 
-  transform: translate3d(100%, 0, 0);
+  z-index: 1000; transform: translate3d(100%, 0, 0);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   padding: 80px 20px 20px; border-left: 1px solid rgba(255,255,255,0.05);
-  will-change: transform;
 }
 .sidebar.active { transform: translate3d(0, 0, 0); }
 .sidebar h2 { font-size: 16px; letter-spacing: 2px; color: #8f7bff; margin-bottom: 20px; text-transform: uppercase; }
 
-.history-list { 
-  list-style: none; padding: 0; max-height: 70vh; 
-  overflow-y: auto; -webkit-overflow-scrolling: touch; 
-}
+.history-list { list-style: none; padding: 0; max-height: 70vh; overflow-y: auto; }
+
+/* Caption support in History Item */
 .history-item {
   background: rgba(255,255,255,0.05); padding: 12px;
-  border-radius: 12px; margin-bottom: 10px; font-size: 11px;
-  display: flex; justify-content: space-between; align-items: center;
+  border-radius: 12px; margin-bottom: 10px;
+  display: flex; flex-direction: column; gap: 8px;
   border: 1px solid rgba(255,255,255,0.08);
-  transform: translateZ(0);
 }
-.history-item a { color: #8f7bff; text-decoration: none; font-weight: 700; }
+.history-cap { font-size: 11px; font-weight: 600; color: #8f7bff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.history-meta { display: flex; justify-content: space-between; align-items: center; font-size: 10px; }
+.history-meta a { color: #fff; text-decoration: none; border: 1px solid #8f7bff; padding: 3px 8px; border-radius: 6px; }
+
+.del-btn { color: #ff4b4b; cursor: pointer; font-size: 14px; }
 
 #splash {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: #05050a; display: flex; flex-direction: column;
   align-items: center; justify-content: center; z-index: 9999;
-  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
 }
-.splash-logo {
-  font-size: 42px; font-weight: 800; letter-spacing: 5px;
-  background: linear-gradient(135deg, #fff, #8f7bff);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  animation: pulse 1.5s infinite alternate ease-in-out;
-}
+.splash-logo { font-size: 42px; font-weight: 800; letter-spacing: 5px; background: linear-gradient(135deg, #fff, #8f7bff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: pulse 1.5s infinite alternate; }
+
 @keyframes pulse { from { transform: scale(1); opacity: 0.7; } to { transform: scale(1.08); opacity: 1; } }
 
 .card {
   width: 92%; max-width: 420px;
-  background: rgba(20,20,40,0.55); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-  border-radius: 24px; padding: 30px;
-  box-shadow: 0 0 50px rgba(120,90,255,0.2);
-  border: 1px solid rgba(255,255,255,0.1); text-align: center;
-  animation: fadeIn .8s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1;
-  will-change: transform, opacity;
+  background: rgba(20,20,40,0.55); backdrop-filter: blur(25px);
+  border-radius: 24px; padding: 30px; border: 1px solid rgba(255,255,255,0.1); text-align: center;
 }
-@keyframes fadeIn { from {opacity:0; transform: translate3d(0, 20px, 0);} to {opacity:1; transform: translate3d(0, 0, 0);} }
 
-.logo { font-size: 38px; font-weight: 800; letter-spacing: 3px; margin-bottom: 5px; text-transform: uppercase; }
+.logo { font-size: 38px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
 .logo span { color: #8f7bff; }
-.subtitle { font-size: 10px; letter-spacing: 2px; opacity: .5; margin-bottom: 30px; text-transform: uppercase; }
+.subtitle { font-size: 10px; opacity: .5; margin-bottom: 30px; text-transform: uppercase; }
 
 input {
   width: 100%; padding: 18px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);
-  outline: none; background: rgba(0,0,0,.4); color: white; font-size: 14px; margin-bottom: 15px;
-  transition: 0.3s;
+  outline: none; background: rgba(0,0,0,.4); color: white; margin-bottom: 15px;
 }
-input:focus { border-color: #8f7bff; background: rgba(0,0,0,0.5); }
+input:focus { border-color: #8f7bff; }
 
 button {
   width: 100%; padding: 15px; border-radius: 15px; border: none;
-  font-weight: 700; font-size: 15px; cursor: pointer; color: white;
+  font-weight: 700; font-size: 15px; color: white;
   background: linear-gradient(135deg, #7b5cff, #9b6dff);
-  box-shadow: 0 10px 20px rgba(123,92,255,0.3); 
-  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 10px 20px rgba(123,92,255,0.3);
 }
-button:active { transform: scale(0.96); }
 
 .status { margin-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
 .hidden { display: none; }
@@ -145,7 +120,7 @@ button:active { transform: scale(0.96); }
 <div id="overlay" onclick="toggleSidebar()"></div>
 
 <div id="splash">
-  <div class="splash-logo">IZUMI</div>
+  <div class="splash-logo">SIRL I</div>
   <p style="font-size: 8px; opacity: 0.4; letter-spacing: 3px; margin-top: 20px;">NEXUS SYSTEM INITIALIZING...</p>
 </div>
 
@@ -154,13 +129,16 @@ button:active { transform: scale(0.96); }
 </div>
 
 <div class="sidebar" id="sidebar">
-  <h2>Nexus History</h2>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h2 style="margin:0;">Nexus History</h2>
+    <span onclick="clearAllHistory()" style="font-size: 10px; color: #ff4b4b; cursor: pointer;">CLEAR ALL</span>
+  </div>
   <ul id="historyList" class="history-list"></ul>
   <div style="margin-top: 30px; opacity: 0.2; font-size: 9px; letter-spacing: 1px;">CORE ENGINE : IZUMI</div>
 </div>
 
 <div class="card">
-  <div class="logo">IZUMI<span>.</span></div>
+  <div class="logo">SIRL I<span>.</span></div>
   <div class="subtitle">Nexus Advanced Media Saving System</div>
 
   <input id="linkInput" placeholder="Paste Instagram URL here..." autocomplete="off">
@@ -176,58 +154,79 @@ button:active { transform: scale(0.96); }
 
 <script>
 window.addEventListener('load', () => {
-  window.requestAnimationFrame(() => {
-    setTimeout(() => {
-      const splash = document.getElementById('splash');
-      splash.style.opacity = '0';
-      setTimeout(() => { 
-        splash.style.visibility = 'hidden'; 
-        splash.style.display = 'none';
-      }, 800);
-    }, 2000);
-  });
+  setTimeout(() => {
+    const splash = document.getElementById('splash');
+    splash.style.opacity = '0';
+    setTimeout(() => { splash.style.display = 'none'; }, 800);
+  }, 2000);
   renderHistory();
 });
 
 function toggleSidebar() {
   const sidebar = document.getElementById('sidebar');
   const overlay = document.getElementById('overlay');
-  
-  window.requestAnimationFrame(() => {
-    sidebar.classList.toggle('active');
-    if(sidebar.classList.contains('active')) {
-      overlay.style.display = 'block';
-      setTimeout(() => overlay.style.opacity = '1', 10);
-    } else {
-      overlay.style.opacity = '0';
-      setTimeout(() => overlay.style.display = 'none', 300);
-    }
-  });
+  sidebar.classList.toggle('active');
+  if(sidebar.classList.contains('active')) {
+    overlay.style.display = 'block';
+    setTimeout(() => overlay.style.opacity = '1', 10);
+  } else {
+    overlay.style.opacity = '0';
+    setTimeout(() => overlay.style.display = 'none', 300);
+  }
 }
 
-function saveToHistory(downloadUrl) {
+// 1. SAVE HISTORY FIX (Caption Added, No Double Trigger)
+function saveToHistory(downloadUrl, caption) {
   let history = JSON.parse(localStorage.getItem('nexus_history') || '[]');
+  
+  // Duplicate URL check
+  if (history.some(item => item.url === downloadUrl)) return;
+
   const newEntry = {
     url: downloadUrl,
+    caption: caption || "Instagram Media",
     time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   };
+  
   history.unshift(newEntry);
-  if (history.length > 15) history.pop();
+  if (history.length > 20) history.pop();
   localStorage.setItem('nexus_history', JSON.stringify(history));
   renderHistory();
+}
+
+function deleteHistoryItem(index) {
+  let history = JSON.parse(localStorage.getItem('nexus_history') || '[]');
+  history.splice(index, 1);
+  localStorage.setItem('nexus_history', JSON.stringify(history));
+  renderHistory();
+}
+
+function clearAllHistory() {
+  if(confirm("Clear all history?")) {
+    localStorage.removeItem('nexus_history');
+    renderHistory();
+  }
 }
 
 function renderHistory() {
   const historyList = document.getElementById('historyList');
   const history = JSON.parse(localStorage.getItem('nexus_history') || '[]');
+  
   if (history.length === 0) {
     historyList.innerHTML = '<li style="opacity:0.4; font-size:12px; margin-top:15px;">No recent saves.</li>';
     return;
   }
-  historyList.innerHTML = history.map(item => `
+
+  historyList.innerHTML = history.map((item, index) => `
     <li class="history-item">
-      <span>🕒 ${item.time}</span>
-      <a href="${item.url}" target="_blank">RE-DOWNLOAD</a>
+      <div class="history-cap">${item.caption}</div>
+      <div class="history-meta">
+        <span>🕒 ${item.time}</span>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <a href="${item.url}" target="_blank">RE-DOWNLOAD</a>
+          <span class="del-btn" onclick="deleteHistoryItem(${index})">×</span>
+        </div>
+      </div>
     </li>
   `).join('');
 }
@@ -241,11 +240,11 @@ function showStatus(text) {
   statusText.innerText = text;
 }
 
+// 2. FETCH FIX (Server se caption lega aur sirf ek baar save karega)
 async function startDownload() {
   const link = document.getElementById("linkInput").value.trim();
   resultBox.innerHTML = "";
   if (!link) { showStatus("🚫 Error: Please enter a valid URL."); return; }
-  if (!link.includes("instagram.com")) { showStatus("🚫 Error: Unsupported platform. Use Instagram."); return; }
   
   showStatus(" Izumi is fetching data...");
 
@@ -256,16 +255,19 @@ async function startDownload() {
       body: JSON.stringify({ url: link })
     });
     const data = await res.json();
+    
     if (data.status === "success") {
       showStatus(" Success: Media engine ready.");
-      resultBox.innerHTML = `<a href="${data.link}" download onclick="saveToHistory('${data.link}')">DOWNLOAD</a>`;
-      saveToHistory(data.link);
+      // Result link update (onclick removed to prevent double entry)
+      resultBox.innerHTML = `<a href="${data.link}" download>DOWNLOAD NOW</a>`;
+      
+      // Save only once here
+      saveToHistory(data.link, data.caption);
     } else {
       showStatus("⚠️ " + data.message);
     }
   } catch (e) {
-    showStatus("🚀 Instagram IP Limited. Please wait 60s and try again.");
-    console.error("Nexus Engine Error Details:", e);
+    showStatus("🚀 Connection Error. Please try again.");
   }
 }
 </script>
