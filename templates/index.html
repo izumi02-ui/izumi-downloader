@@ -20,7 +20,7 @@
 <meta property="og:type" content="website">
 
 <style>
-/* 🏎️ PERFORMANCE LAYER (SAME) */
+/* 🏎️ PERFORMANCE LAYER */
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 body {
@@ -58,29 +58,28 @@ body {
 
 .history-list { list-style: none; padding: 0; max-height: 70vh; overflow-y: auto; }
 
-/* 🎬 History Item Updated */
+/* 🎬 Updated History Item */
 .history-item {
-  background: rgba(255,255,255,0.05); padding: 12px;
-  border-radius: 12px; margin-bottom: 10px;
-  display: flex; flex-direction: column; gap: 8px;
+  background: rgba(255,255,255,0.05); padding: 14px;
+  border-radius: 12px; margin-bottom: 12px;
+  display: flex; flex-direction: column; gap: 4px;
   border: 1px solid rgba(255,255,255,0.08);
   position: relative;
+  text-decoration: none; color: inherit;
 }
-.history-cap { font-size: 11px; font-weight: 600; color: #8f7bff; width: 80%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.history-meta { display: flex; justify-content: space-between; align-items: center; font-size: 10px; }
-.history-meta a { color: #fff; text-decoration: none; border: 1px solid #8f7bff; padding: 3px 8px; border-radius: 6px; }
+.history-user { font-size: 11px; font-weight: 700; color: #8f7bff; text-transform: lowercase; }
+.history-desc { font-size: 10px; font-weight: 400; color: rgba(255,255,255,0.7); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 8px; line-height: 1.4; }
+.history-meta { display: flex; justify-content: flex-start; align-items: center; font-size: 9px; opacity: 0.6; font-weight: 500; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; }
 
-/* 🔘 Three Dots Horizontal ( ••• ) & Position */
+/* 🔘 Three Dots Horizontal ( ••• ) */
 .options-btn {
   position: absolute; top: 8px; right: 10px;
   color: #fff; opacity: 0.6; cursor: pointer; 
-  font-size: 18px; font-weight: bold;
-  padding: 0 5px; letter-spacing: -1px;
+  font-size: 18px; font-weight: bold; padding: 5px; letter-spacing: -1px;
 }
 
-/* 🍿 Dropdown Animation */
 .delete-dropdown {
-  position: absolute; top: 30px; right: 10px;
+  position: absolute; top: 35px; right: 10px;
   background: #8f7bff; color: white; border-radius: 8px;
   padding: 6px 14px; font-size: 10px; font-weight: bold;
   box-shadow: 0 4px 15px rgba(0,0,0,0.4);
@@ -90,58 +89,26 @@ body {
 }
 .delete-dropdown.show { display: block; opacity: 1; transform: translateY(0); }
 
-/* ✨ Clear All UI Color Update */
 .clear-all { 
   font-size: 10px; color: white; 
   background: rgba(143, 123, 255, 0.2); 
   padding: 5px 12px; border-radius: 8px; 
   border: 1px solid rgba(143, 123, 255, 0.5); 
   cursor: pointer; text-transform: uppercase; font-weight: 600;
-  transition: 0.3s ease;
-}
-.clear-all:active { background: #8f7bff; border-color: #fff; }
-
-#splash {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: #05050a; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; z-index: 9999;
-}
-.splash-logo { font-size: 42px; font-weight: 800; letter-spacing: 5px; background: linear-gradient(135deg, #fff, #8f7bff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: pulse 1.5s infinite alternate; }
-
-@keyframes pulse { from { transform: scale(1); opacity: 0.7; } to { transform: scale(1.08); opacity: 1; } }
-
-.card {
-  width: 92%; max-width: 420px;
-  background: rgba(20,20,40,0.55); backdrop-filter: blur(25px);
-  border-radius: 24px; padding: 30px; border: 1px solid rgba(255,255,255,0.1); text-align: center;
 }
 
+/* Rest of the UI (Card, Input, Buttons) */
+.card { width: 92%; max-width: 420px; background: rgba(20,20,40,0.55); backdrop-filter: blur(25px); border-radius: 24px; padding: 30px; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
 .logo { font-size: 38px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
 .logo span { color: #8f7bff; }
 .subtitle { font-size: 10px; opacity: .5; margin-bottom: 30px; text-transform: uppercase; }
-
-input {
-  width: 100%; padding: 18px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);
-  outline: none; background: rgba(0,0,0,.4); color: white; margin-bottom: 15px;
-}
-input:focus { border-color: #8f7bff; }
-
-button {
-  width: 100%; padding: 15px; border-radius: 15px; border: none;
-  font-weight: 700; font-size: 15px; color: white;
-  background: linear-gradient(135deg, #7b5cff, #9b6dff);
-  box-shadow: 0 10px 20px rgba(123,92,255,0.3);
-}
-
+input { width: 100%; padding: 18px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); outline: none; background: rgba(0,0,0,.4); color: white; margin-bottom: 15px; }
+button { width: 100%; padding: 15px; border-radius: 15px; border: none; font-weight: 700; font-size: 15px; color: white; background: linear-gradient(135deg, #7b5cff, #9b6dff); box-shadow: 0 10px 20px rgba(123,92,255,0.3); cursor: pointer; }
 .status { margin-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
 .hidden { display: none; }
 .loader { width: 32px; height: 32px; border-radius: 50%; border: 3px solid rgba(255,255,255,.05); border-top: 3px solid #8f7bff; animation: spin .9s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-
-#result a {
-  display: inline-block; margin-top: 20px; color: #fff; text-decoration: none; font-weight: 600;
-  padding: 14px 28px; background: rgba(143, 123, 255, 0.2); border: 1px solid #8f7bff; border-radius: 14px;
-}
+#result a { display: inline-block; margin-top: 20px; color: #fff; text-decoration: none; font-weight: 600; padding: 14px 28px; background: rgba(143, 123, 255, 0.2); border: 1px solid #8f7bff; border-radius: 14px; }
 .footer { margin-top: 30px; font-size: 9px; opacity: .4; letter-spacing: 1.5px; text-transform: uppercase; }
 </style>
 </head>
@@ -206,14 +173,20 @@ function toggleSidebar() {
   }
 }
 
-function saveToHistory(downloadUrl, caption) {
+function saveToHistory(downloadUrl, username, description) {
   let history = JSON.parse(localStorage.getItem('nexus_history') || '[]');
   if (history.some(item => item.url === downloadUrl)) return;
 
+  const now = new Date();
+  const options = { hour: '2-digit', minute: '2-digit', hour12: true };
+  const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
+  const timeStr = now.toLocaleTimeString('en-US', options);
+
   const newEntry = {
     url: downloadUrl,
-    caption: caption || "Instagram Media",
-    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    user: username || "Instagram User",
+    desc: description || "No description available",
+    dateTime: `${dateStr} • ${timeStr}`
   };
   
   history.unshift(newEntry);
@@ -223,6 +196,7 @@ function saveToHistory(downloadUrl, caption) {
 }
 
 function toggleMenu(e, index) {
+  e.preventDefault();
   e.stopPropagation();
   closeAllMenus();
   const menu = document.getElementById(`menu-${index}`);
@@ -258,32 +232,22 @@ function renderHistory() {
     return;
   }
 
-  historyList.innerHTML = history.map((item, index) => {
-    // Screenshot wali "undefined" issue fix
-    const displayCaption = (item.caption && item.caption !== "undefined") ? item.caption : "Instagram Media";
-    
-    return `
-      <li class="history-item">
-        <div class="history-cap">${displayCaption}</div>
+  historyList.innerHTML = history.map((item, index) => `
+    <li class="history-item-container" style="position:relative;">
+        <a href="${item.url}" target="_blank" class="history-item">
+            <div class="history-user">@${item.user}</div>
+            <div class="history-desc">${item.desc}</div>
+            <div class="history-meta">📅 ${item.dateTime}</div>
+        </a>
         <div class="options-btn" onclick="toggleMenu(event, ${index})">•••</div>
         <div class="delete-dropdown" id="menu-${index}" onclick="deleteHistoryItem(${index})">DELETE</div>
-        <div class="history-meta">
-          <span>🕒 ${item.time}</span>
-          <a href="${item.url}" target="_blank">RE-DOWNLOAD</a>
-        </div>
-      </li>
-    `;
-  }).join('');
+    </li>
+  `).join('');
 }
 
 const statusBox = document.getElementById("statusBox");
 const statusText = document.getElementById("statusText");
 const resultBox = document.getElementById("result");
-
-function showStatus(text) {
-  statusBox.classList.remove("hidden");
-  statusText.innerText = text;
-}
 
 async function startDownload() {
   const link = document.getElementById("linkInput").value.trim();
@@ -303,13 +267,20 @@ async function startDownload() {
     if (data.status === "success") {
       showStatus(" Success: Media engine ready.");
       resultBox.innerHTML = `<a href="${data.link}" download>DOWNLOAD NOW</a>`;
-      saveToHistory(data.link, data.caption);
+      
+      // Yaha data.username aur data.description server se aayenge
+      saveToHistory(data.link, data.username, data.description);
     } else {
       showStatus("⚠️ " + data.message);
     }
   } catch (e) {
     showStatus("🚀 Connection Error. Please try again.");
   }
+}
+
+function showStatus(text) {
+  statusBox.classList.remove("hidden");
+  statusText.innerText = text;
 }
 </script>
 </body>
