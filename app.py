@@ -61,10 +61,27 @@ def download_api():
     output_path = os.path.join(DOWNLOAD_FOLDER, unique_name)
 
     try:
-        # 🚀 Advanced Nexus Engine Command (Optimized for Render Free Tier)
+        # --- NAYA FEATURE: CAPTION FETCHING (KUCH DELETE NAHI KIYA) ---
+        title_cmd = [
+            "yt-dlp", "--get-title", "--no-playlist", 
+            "--user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            video_url
+        ]
+        
+        cookie_path = prepare_cookies()
+        if cookie_path:
+            title_cmd.extend(["--cookies", cookie_path])
+        
+        title_res = subprocess.run(title_cmd, capture_output=True, text=True, timeout=15)
+        raw_caption = title_res.stdout.strip() if title_res.stdout else "Instagram Media"
+        # Caption ko limit kar rahe hain taaki UI kharab na ho
+        clean_caption = (raw_caption[:30] + '...') if len(raw_caption) > 30 else raw_caption
+        # -----------------------------------------------------------
+
+        # 🚀 Advanced Nexus Engine Command (Aapka Purana Command)
         cmd = [
             "yt-dlp",
-            "-f", "best[ext=mp4]", # 👈 FFmpeg ke bina HQ MP4 download karne ke liye
+            "-f", "best[ext=mp4]", 
             "--no-check-certificate",
             "--no-playlist",
             "--geo-bypass",
@@ -73,18 +90,20 @@ def download_api():
             "-o", output_path
         ]
 
-        # 🍪 Cookies check aur inject
-        cookie_path = prepare_cookies()
         if cookie_path:
             cmd.extend(["--cookies", cookie_path])
         
         cmd.append(video_url)
         
-        # Engine execution with logs for Render debugging
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
 
         if os.path.exists(output_path):
-            return jsonify({"status": "success", "link": f"/files/{unique_name}"})
+            # Yahan ab hum 'caption' bhi return kar rahe hain
+            return jsonify({
+                "status": "success", 
+                "link": f"/files/{unique_name}",
+                "caption": clean_caption
+            })
         else:
             print(f"Engine Log: {result.stderr}")
             return jsonify({"status": "error", "message": "Instagram ne block kiya ya link galat hai."})
