@@ -58,28 +58,29 @@ body {
 
 .history-list { list-style: none; padding: 0; max-height: 70vh; overflow-y: auto; }
 
-/* 🎬 History Item UI Update */
-.history-item-container { position: relative; margin-bottom: 12px; }
+/* 🎬 History Item Updated */
 .history-item {
-  background: rgba(255,255,255,0.05); padding: 14px;
-  border-radius: 12px; display: flex; flex-direction: column; gap: 4px;
-  border: 1px solid rgba(255,255,255,0.08); text-decoration: none; color: inherit;
+  background: rgba(255,255,255,0.05); padding: 12px;
+  border-radius: 12px; margin-bottom: 10px;
+  display: flex; flex-direction: column; gap: 8px;
+  border: 1px solid rgba(255,255,255,0.08);
+  position: relative;
 }
-.history-user { font-size: 11px; font-weight: 700; color: #8f7bff; text-transform: lowercase; }
-.history-desc { font-size: 10px; font-weight: 400; color: rgba(255,255,255,0.7); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; margin-top: 2px; }
-.history-meta { font-size: 9px; opacity: 0.5; margin-top: 8px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 6px; display: flex; align-items: center; gap: 5px; }
+.history-cap { font-size: 11px; font-weight: 600; color: #8f7bff; width: 80%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.history-meta { display: flex; justify-content: space-between; align-items: center; font-size: 10px; }
+.history-meta a { color: #fff; text-decoration: none; border: 1px solid #8f7bff; padding: 3px 8px; border-radius: 6px; }
 
-/* 🔘 Three Dots Horizontal ( ••• ) */
+/* 🔘 Three Dots Horizontal ( ••• ) & Position */
 .options-btn {
   position: absolute; top: 8px; right: 10px;
   color: #fff; opacity: 0.6; cursor: pointer; 
   font-size: 18px; font-weight: bold;
-  padding: 0 5px; letter-spacing: -1px; z-index: 5;
+  padding: 0 5px; letter-spacing: -1px;
 }
 
 /* 🍿 Dropdown Animation */
 .delete-dropdown {
-  position: absolute; top: 35px; right: 10px;
+  position: absolute; top: 30px; right: 10px;
   background: #8f7bff; color: white; border-radius: 8px;
   padding: 6px 14px; font-size: 10px; font-weight: bold;
   box-shadow: 0 4px 15px rgba(0,0,0,0.4);
@@ -89,7 +90,7 @@ body {
 }
 .delete-dropdown.show { display: block; opacity: 1; transform: translateY(0); }
 
-/* ✨ Clear All UI */
+/* ✨ Clear All UI Color Update */
 .clear-all { 
   font-size: 10px; color: white; 
   background: rgba(143, 123, 255, 0.2); 
@@ -130,7 +131,6 @@ button {
   font-weight: 700; font-size: 15px; color: white;
   background: linear-gradient(135deg, #7b5cff, #9b6dff);
   box-shadow: 0 10px 20px rgba(123,92,255,0.3);
-  cursor: pointer;
 }
 
 .status { margin-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
@@ -206,20 +206,14 @@ function toggleSidebar() {
   }
 }
 
-function saveToHistory(downloadUrl, username, description) {
+function saveToHistory(downloadUrl, caption) {
   let history = JSON.parse(localStorage.getItem('nexus_history') || '[]');
   if (history.some(item => item.url === downloadUrl)) return;
 
-  const now = new Date();
-  const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: true };
-  const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
-  const timeStr = now.toLocaleTimeString('en-US', timeOptions);
-
   const newEntry = {
     url: downloadUrl,
-    user: username && username !== "undefined" ? username : "instagram_user",
-    desc: description && description !== "undefined" ? description : "Instagram Media File",
-    dateTime: `${dateStr} • ${timeStr}`
+    caption: caption || "Instagram Media",
+    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   };
   
   history.unshift(newEntry);
@@ -229,7 +223,6 @@ function saveToHistory(downloadUrl, username, description) {
 }
 
 function toggleMenu(e, index) {
-  e.preventDefault();
   e.stopPropagation();
   closeAllMenus();
   const menu = document.getElementById(`menu-${index}`);
@@ -265,17 +258,22 @@ function renderHistory() {
     return;
   }
 
-  historyList.innerHTML = history.map((item, index) => `
-    <li class="history-item-container">
-      <a href="${item.url}" target="_blank" class="history-item">
-        <div class="history-user">@${item.user}</div>
-        <div class="history-desc">${item.desc}</div>
-        <div class="history-meta">🕒 ${item.dateTime}</div>
-      </a>
-      <div class="options-btn" onclick="toggleMenu(event, ${index})">•••</div>
-      <div class="delete-dropdown" id="menu-${index}" onclick="deleteHistoryItem(${index})">DELETE</div>
-    </li>
-  `).join('');
+  historyList.innerHTML = history.map((item, index) => {
+    // Screenshot wali "undefined" issue fix
+    const displayCaption = (item.caption && item.caption !== "undefined") ? item.caption : "Instagram Media";
+    
+    return `
+      <li class="history-item">
+        <div class="history-cap">${displayCaption}</div>
+        <div class="options-btn" onclick="toggleMenu(event, ${index})">•••</div>
+        <div class="delete-dropdown" id="menu-${index}" onclick="deleteHistoryItem(${index})">DELETE</div>
+        <div class="history-meta">
+          <span>🕒 ${item.time}</span>
+          <a href="${item.url}" target="_blank">RE-DOWNLOAD</a>
+        </div>
+      </li>
+    `;
+  }).join('');
 }
 
 const statusBox = document.getElementById("statusBox");
@@ -305,8 +303,7 @@ async function startDownload() {
     if (data.status === "success") {
       showStatus(" Success: Media engine ready.");
       resultBox.innerHTML = `<a href="${data.link}" download>DOWNLOAD NOW</a>`;
-      // Username aur description api response se aayenge
-      saveToHistory(data.link, data.username, data.caption || data.description);
+      saveToHistory(data.link, data.caption);
     } else {
       showStatus("⚠️ " + data.message);
     }
