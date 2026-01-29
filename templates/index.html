@@ -11,18 +11,17 @@
 <meta name="theme-color" content="#0f1020">
 <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/izumi02-ui/izumi-downloader/refs/heads/main/file_0000000086cc7206b52bd98a7f95f826.png">
 
-<title>Nexus — Max FPS Optimized</title>
+<title>Nexus — Hyper-Speed System</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;800&display=swap');
 
-/* 🏎️ GPU ACCELERATION & FPS OPTIMIZATION */
+/* 🏎️ 120Hz Optimization & Core Styling */
 * { 
   box-sizing: border-box; 
   -webkit-tap-highlight-color: transparent; 
   outline: none;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -32,177 +31,184 @@ body {
   font-family: 'Poppins', sans-serif;
   color: white; overflow: hidden;
   position: fixed; width: 100%; height: 100%;
-  will-change: transform; /* Boosts FPS to 120Hz if available */
 }
 
-/* 🧬 Ultra-Smooth Particle Background */
-#bg-canvas { position: absolute; inset: 0; z-index: -1; background: radial-gradient(circle at top, #0f1020, #05050a); }
-
-#overlay { 
-  position: fixed; inset: 0; background: rgba(0,0,0,0.7); 
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  z-index: 999; display: none; opacity: 0; 
-  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+/* 🧬 Boot Splash Screen with Glitch Animation */
+#splash {
+  position: fixed; inset: 0; background: #05050a;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  z-index: 9999; transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 🚀 Hyper-Smooth Sidebar */
+.glitch-wrapper {
+  font-size: 52px; font-weight: 800; letter-spacing: 10px;
+  position: relative; color: white;
+  animation: bootScale 2s ease-out forwards;
+}
+
+.glitch-wrapper::before, .glitch-wrapper::after {
+  content: 'IZUMI'; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+}
+
+.glitch-wrapper::before {
+  color: #ff00c1; left: 2px; text-shadow: -2px 0 #ff00c1;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+.glitch-wrapper::after {
+  color: #00fff9; left: -2px; text-shadow: 2px 0 #00fff9;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim2 5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+  0% { clip: rect(31px, 9999px, 94px, 0); }
+  20% { clip: rect(62px, 9999px, 42px, 0); }
+  40% { clip: rect(16px, 9999px, 78px, 0); }
+  60% { clip: rect(81px, 9999px, 13px, 0); }
+  80% { clip: rect(54px, 9999px, 90px, 0); }
+  100% { clip: rect(22px, 9999px, 67px, 0); }
+}
+
+@keyframes glitch-anim2 {
+  0% { clip: rect(89px, 9999px, 2px, 0); }
+  20% { clip: rect(11px, 9999px, 85px, 0); }
+  100% { clip: rect(35px, 9999px, 92px, 0); }
+}
+
+@keyframes bootScale {
+  0% { transform: scale(0.8); opacity: 0; filter: blur(10px); }
+  50% { transform: scale(1.1); opacity: 1; filter: blur(0px); }
+  100% { transform: scale(1); }
+}
+
+/* 💎 Main UI Card & Background */
+#bg-layers { position: absolute; inset: 0; z-index: -1; background: radial-gradient(circle at top, #0f1020, #05050a); }
+
+.card {
+  width: 92%; max-width: 410px;
+  background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+  border-radius: 40px; padding: 45px 30px; border: 1px solid rgba(255,255,255,0.08);
+  text-align: center; z-index: 10; will-change: transform;
+}
+
+.logo span { color: #8f7bff; display: inline-block; animation: corePulse 2s infinite ease-in-out; }
+@keyframes corePulse { 0%, 100% { transform: scale(1); text-shadow: 0 0 10px #8f7bff; } 50% { transform: scale(1.1); text-shadow: 0 0 30px #8f7bff; } }
+
+/* 🚀 Ultra-Smooth Sidebar */
 .sidebar {
   position: fixed; top: 0; right: 0; width: 310px; height: 100%;
-  background: rgba(10, 10, 20, 0.95); backdrop-filter: blur(35px);
+  background: rgba(10, 10, 20, 0.98); backdrop-filter: blur(40px);
   z-index: 1000; transform: translate3d(105%, 0, 0);
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   padding: 80px 20px; border-left: 1px solid rgba(143, 123, 255, 0.15);
-  will-change: transform;
 }
 .sidebar.active { transform: translate3d(0, 0, 0); }
 
-.history-item-container { 
-  position: relative; margin-bottom: 12px; 
-  opacity: 0; transform: translate3d(30px, 0, 0);
-}
+.history-item-container { position: relative; margin-bottom: 12px; opacity: 0; transform: translate3d(20px, 0, 0); }
 .sidebar.active .history-item-container { animation: waveIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
 @keyframes waveIn { to { opacity: 1; transform: translate3d(0, 0, 0); } }
 
 .history-item {
-  background: rgba(255,255,255,0.03); padding: 16px; border-radius: 20px;
+  background: rgba(255,255,255,0.04); padding: 16px; border-radius: 20px;
   display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.06);
   text-decoration: none; color: inherit; transition: 0.2s;
 }
-.history-item:active { transform: scale(0.97); background: rgba(143,123,255,0.08); }
 
-/* 🔘 FIXED DELETE LOGIC */
-.options-btn { 
-  position: absolute; top: 12px; right: 12px; 
-  width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
-  opacity: 0.5; cursor: pointer; font-size: 18px; z-index: 5;
+/* 🔘 FIXED DELETE POPUP */
+.options-btn { position: absolute; top: 12px; right: 12px; padding: 5px; opacity: 0.4; cursor: pointer; z-index: 5; }
+.delete-popup {
+  position: absolute; top: 10px; right: 45px; background: #ff3e3e; color: white;
+  padding: 8px 15px; border-radius: 12px; font-size: 10px; font-weight: 800;
+  display: none; animation: popIn 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 5px 15px rgba(255,62,62,0.4); z-index: 100;
 }
+@keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-.delete-dropdown {
-  position: absolute; top: 10px; right: 45px;
-  background: #ff3e3e; color: white; border-radius: 12px;
-  padding: 8px 16px; font-size: 11px; font-weight: 800;
-  box-shadow: 0 10px 20px rgba(255,62,62,0.3);
-  z-index: 100; display: none;
-  animation: beastPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-@keyframes beastPop { from { transform: scale(0.5) translateX(10px); opacity: 0; } to { transform: scale(1) translateX(0); opacity: 1; } }
-
-/* 💎 UI Card & Animations */
-.card {
-  width: 92%; max-width: 410px;
-  background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(25px);
-  border-radius: 40px; padding: 45px 30px; border: 1px solid rgba(255,255,255,0.08);
-  text-align: center; z-index: 10;
-}
-
-.logo span { color: #8f7bff; display: inline-block; animation: corePulse 2s infinite ease-in-out; }
-@keyframes corePulse { 0%, 100% { text-shadow: 0 0 10px #8f7bff; transform: scale(1); } 50% { text-shadow: 0 0 30px #8f7bff; transform: scale(1.05); } }
-
+/* 🎹 Input & Buttons */
 input {
   width: 100%; padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(0,0,0,0.4); color: white; margin-bottom: 20px; transition: 0.3s;
+  background: rgba(0,0,0,0.5); color: white; margin-bottom: 20px; transition: 0.3s;
 }
-input:focus { border-color: #8f7bff; animation: shake 0.3s cubic-bezier(.36,.07,.19,.97) both; }
-@keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } }
+input:focus { border-color: #8f7bff; box-shadow: 0 0 20px rgba(143,123,255,0.2); }
 
 button {
   width: 100%; padding: 18px; border-radius: 20px; border: none; font-weight: 800; font-size: 16px;
   background: linear-gradient(135deg, #7b5cff, #9b6dff); color: white;
-  box-shadow: 0 10px 30px rgba(123,92,255,0.3); cursor: pointer; position: relative; overflow: hidden;
+  box-shadow: 0 10px 30px rgba(123,92,255,0.3); cursor: pointer; overflow: hidden; position: relative;
 }
 button::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transform: translateX(-100%); animation: shine 3s infinite; }
 @keyframes shine { 100% { transform: translateX(100%); } }
 
-.status { margin-top: 25px; display: none; flex-direction: column; align-items: center; }
-.loader { width: 30px; height: 30px; border: 3px solid rgba(255,255,255,0.05); border-top-color: #8f7bff; border-radius: 50%; animation: spin 0.8s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-#statusText { font-size: 11px; margin-top: 15px; color: rgba(255,255,255,0.6); letter-spacing: 1.5px; }
-
-#result a {
-  display: inline-block; margin-top: 25px; padding: 16px 32px; 
-  background: rgba(143,123,255,0.1); border: 2px solid #8f7bff; 
-  border-radius: 20px; color: white; text-decoration: none; font-weight: 800;
-  animation: glow 2s infinite;
-}
-@keyframes glow { 0%, 100% { box-shadow: 0 0 5px rgba(143,123,255,0.2); } 50% { box-shadow: 0 0 20px rgba(143,123,255,0.5); } }
+#overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); z-index: 999; display: none; opacity: 0; transition: 0.3s; }
 </style>
 </head>
 <body>
 
-<div id="bg-canvas"></div>
+<div id="bg-layers"></div>
 <div id="overlay" onclick="toggleSidebar()"></div>
 
-<div class="menu-btn" style="position:absolute; top:30px; right:30px; z-index:1001; cursor:pointer;" onclick="toggleSidebar()">
+<div id="splash">
+  <div class="glitch-wrapper">IZUMI</div>
+  <p style="font-size: 8px; opacity: 0.4; letter-spacing: 5px; margin-top: 30px; font-weight: 800;">NEXUS SYSTEM v4.0 • BOOTING...</p>
+</div>
+
+<div class="menu-btn" style="position:absolute; top:35px; right:30px; z-index:1001; cursor:pointer;" onclick="toggleSidebar()">
   <div style="width:22px; height:2px; background:white; margin:5px 0;"></div>
-  <div style="width:15px; height:2px; background:white; margin:5px 0; margin-left:7px;"></div>
+  <div style="width:14px; height:2px; background:white; margin:5px 0; margin-left:8px;"></div>
 </div>
 
 <div class="sidebar" id="sidebar">
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px;">
-    <h2 style="margin:0; font-size:18px;">HISTORY</h2>
-    <span onclick="clearHistory()" style="font-size: 10px; opacity: 0.5; border: 1px solid rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 10px;">CLEAR</span>
+    <h2 style="margin:0; font-size:18px; letter-spacing:1px;">LOGS</h2>
+    <span onclick="clearHistory()" style="font-size: 9px; opacity: 0.5; border: 1px solid rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 10px;">WIPE ALL</span>
   </div>
   <ul id="historyList" style="list-style:none; padding:0;"></ul>
 </div>
 
 <div class="card">
-  <div class="logo" style="font-size:42px; font-weight:800;">IZUMI<span>.</span></div>
-  <p style="font-size: 9px; opacity: 0.3; letter-spacing: 3px; margin-bottom: 35px;">HYPER-OPTIMIZED MEDIA ENGINE</p>
+  <div class="logo" style="font-size:40px; font-weight:800; letter-spacing:3px;">IZUMI<span>.</span></div>
+  <p style="font-size: 9px; opacity: 0.3; letter-spacing: 2px; margin-bottom: 35px; font-weight:800;">ADVANCED MEDIA ENGINE</p>
 
   <input id="linkInput" placeholder="Paste link here..." autocomplete="off">
-  <button onclick="startProcess()">INITIALIZE FETCH</button>
+  <button onclick="startDownload()">INITIALIZE SEQUENCE</button>
 
-  <div id="statusBox" class="status">
-    <div class="loader"></div>
-    <p id="statusText">WAITING FOR SEQUENCE...</p>
+  <div id="statusBox" style="margin-top:25px; display:none; flex-direction:column; align-items:center;">
+    <div style="width:25px; height:25px; border:2px solid rgba(255,255,255,0.1); border-top-color:#8f7bff; border-radius:50%; animation:spin 0.8s linear infinite;"></div>
+    <p id="statusText" style="font-size:10px; margin-top:15px; letter-spacing:1px; opacity:0.6;"></p>
   </div>
   <div id="result"></div>
 </div>
 
 <script>
-// 🏎️ FRAME RATE OPTIMIZER (RequestAnimationFrame)
+@keyframes spin { to { transform: rotate(360deg); } }
+
+// 🏎️ FPS Optimization: Splash handling
+window.onload = () => {
+  setTimeout(() => {
+    const s = document.getElementById('splash');
+    s.style.opacity = '0';
+    setTimeout(() => s.style.display = 'none', 800);
+  }, 2500);
+  renderHistory();
+};
+
 const toggleSidebar = () => {
   const sb = document.getElementById('sidebar');
   const ov = document.getElementById('overlay');
-  const isActive = sb.classList.toggle('active');
-  
-  if (isActive) {
-    ov.style.display = 'block';
-    requestAnimationFrame(() => ov.style.opacity = '1');
-  } else {
-    ov.style.opacity = '0';
-    setTimeout(() => { if(!sb.classList.contains('active')) ov.style.display = 'none'; }, 400);
-    closeAllMenus();
-  }
+  const active = sb.classList.toggle('active');
+  ov.style.display = active ? 'block' : 'none';
+  requestAnimationFrame(() => ov.style.opacity = active ? '1' : '0');
+  if(!active) closeMenus();
 };
 
-const closeAllMenus = () => {
-  document.querySelectorAll('.delete-dropdown').forEach(d => d.style.display = 'none');
-};
+const closeMenus = () => document.querySelectorAll('.delete-popup').forEach(p => p.style.display = 'none');
 
-const toggleDeleteMenu = (e, index) => {
-  e.stopPropagation(); // Stops direct click-to-delete bug
-  e.preventDefault();
-  closeAllMenus();
-  const menu = document.getElementById(`menu-${index}`);
-  menu.style.display = 'block';
-};
-
-const renderHistory = () => {
-  const list = document.getElementById('historyList');
-  const logs = JSON.parse(localStorage.getItem('nx_logs') || '[]');
-  list.innerHTML = logs.map((l, i) => `
-    <li class="history-item-container" style="animation-delay: ${i*0.05}s">
-      <a href="${l.url}" target="_blank" class="history-item">
-        <div style="font-size:11px; font-weight:800; color:#8f7bff;">@${l.user}</div>
-        <div style="font-size:10px; opacity:0.6; margin:4px 0;">${l.cap}</div>
-        <div style="font-size:8px; opacity:0.3;">TIME: ${l.time}</div>
-      </a>
-      <div class="options-btn" onclick="toggleDeleteMenu(event, ${i})">•••</div>
-      <div id="menu-${i}" class="delete-dropdown" onclick="confirmDelete(event, ${i})">CONFIRM DELETE</div>
-    </li>
-  `).join('');
+const showDelete = (e, i) => {
+  e.stopPropagation(); e.preventDefault();
+  closeMenus();
+  document.getElementById(`menu-${i}`).style.display = 'block';
 };
 
 const confirmDelete = (e, i) => {
@@ -213,9 +219,25 @@ const confirmDelete = (e, i) => {
   renderHistory();
 };
 
-const clearHistory = () => { if(confirm("Clear all logs?")) { localStorage.removeItem('nx_logs'); renderHistory(); } };
+const renderHistory = () => {
+  const list = document.getElementById('historyList');
+  const logs = JSON.parse(localStorage.getItem('nx_logs') || '[]');
+  list.innerHTML = logs.map((l, i) => `
+    <li class="history-item-container" style="animation-delay: ${i*0.05}s">
+      <a href="${l.url}" target="_blank" class="history-item">
+        <div style="font-size:11px; font-weight:800; color:#8f7bff;">@${l.user}</div>
+        <div style="font-size:10px; opacity:0.6; margin:4px 0;">${l.cap}</div>
+        <div style="font-size:8px; opacity:0.3;">${l.time}</div>
+      </a>
+      <div class="options-btn" onclick="showDelete(event, ${i})">•••</div>
+      <div id="menu-${i}" class="delete-popup" onclick="confirmDelete(event, ${i})">CONFIRM DELETE</div>
+    </li>
+  `).join('');
+};
 
-async function startProcess() {
+const clearHistory = () => { if(confirm("Wipe all data?")) { localStorage.removeItem('nx_logs'); renderHistory(); } };
+
+async function startDownload() {
   const url = document.getElementById('linkInput').value.trim();
   const statusBox = document.getElementById('statusBox');
   const statusText = document.getElementById('statusText');
@@ -224,7 +246,7 @@ async function startProcess() {
   if(!url) return;
   result.innerHTML = "";
   statusBox.style.display = "flex";
-  statusText.innerText = "AUTHENTICATING...";
+  statusText.innerText = "ACCESSING ENGINE...";
 
   try {
     const res = await fetch("/api/download", {
@@ -234,28 +256,25 @@ async function startProcess() {
     });
     const data = await res.json();
     if(data.status === "success") {
-      statusText.innerText = "SEQUENCE COMPLETE";
-      result.innerHTML = `<a href="${data.link}" download>DOWNLOAD NOW</a>`;
+      statusText.innerText = "FETCH SUCCESSFUL";
+      result.innerHTML = `<a href="${data.link}" download style="display:inline-block; margin-top:20px; padding:15px 30px; background:rgba(143,123,255,0.1); border:2px solid #8f7bff; border-radius:20px; color:white; text-decoration:none; font-weight:800;">DOWNLOAD</a>`;
       
       let logs = JSON.parse(localStorage.getItem('nx_logs') || '[]');
       if(!logs.some(l => l.url === data.link)) {
         logs.unshift({ 
           url: data.link, 
-          user: data.username || "ig_user", 
+          user: data.username || "user", 
           cap: (data.caption || "Media File").replace(/#[a-zA-Z0-9_]+/g, '').trim(),
           time: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})
         });
         localStorage.setItem('nx_logs', JSON.stringify(logs.slice(0, 15)));
         renderHistory();
       }
-    } else {
-      statusText.innerText = "ENGINE ERROR: " + data.message;
-    }
-  } catch (e) { statusText.innerText = "NETWORK BREACH DETECTED"; }
+    } else { statusText.innerText = "ERROR: " + data.message; }
+  } catch (e) { statusText.innerText = "CONNECTION FAILED"; }
 }
 
-document.addEventListener('click', closeAllMenus);
-window.onload = renderHistory;
+document.addEventListener('click', closeMenus);
 </script>
 </body>
 </html>
