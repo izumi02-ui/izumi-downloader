@@ -58,18 +58,40 @@ body {
 
 .history-list { list-style: none; padding: 0; max-height: 70vh; overflow-y: auto; }
 
-/* Caption support in History Item */
+/* 🎬 History Item & Menu Updates */
 .history-item {
   background: rgba(255,255,255,0.05); padding: 12px;
   border-radius: 12px; margin-bottom: 10px;
   display: flex; flex-direction: column; gap: 8px;
   border: 1px solid rgba(255,255,255,0.08);
+  position: relative;
 }
-.history-cap { font-size: 11px; font-weight: 600; color: #8f7bff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.history-cap { font-size: 11px; font-weight: 600; color: #8f7bff; width: 85%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .history-meta { display: flex; justify-content: space-between; align-items: center; font-size: 10px; }
 .history-meta a { color: #fff; text-decoration: none; border: 1px solid #8f7bff; padding: 3px 8px; border-radius: 6px; }
 
-.del-btn { color: #ff4b4b; cursor: pointer; font-size: 14px; }
+/* 🔘 Three Dots Style */
+.options-btn {
+  position: absolute; top: 12px; right: 12px;
+  color: #fff; opacity: 0.6; cursor: pointer; font-size: 16px;
+  padding: 0 5px;
+}
+
+/* 🍿 Dropdown Animation */
+.delete-dropdown {
+  position: absolute; top: 32px; right: 10px;
+  background: #8f7bff; color: white; border-radius: 8px;
+  padding: 5px 12px; font-size: 10px; font-weight: bold;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  z-index: 10; display: none; opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.delete-dropdown.show { display: block; opacity: 1; transform: translateY(0); }
+
+/* ✨ Clear All Color Update */
+.clear-all { font-size: 10px; color: #fff; background: rgba(143, 123, 255, 0.3); padding: 4px 10px; border-radius: 6px; border: 1px solid #8f7bff; cursor: pointer; transition: 0.3s; }
+.clear-all:hover { background: #8f7bff; }
 
 #splash {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -131,7 +153,7 @@ button {
 <div class="sidebar" id="sidebar">
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
     <h2 style="margin:0;">Nexus History</h2>
-    <span onclick="clearAllHistory()" style="font-size: 10px; color: #ff4b4b; cursor: pointer;">CLEAR ALL</span>
+    <span onclick="clearAllHistory()" class="clear-all">CLEAR ALL</span>
   </div>
   <ul id="historyList" class="history-list"></ul>
   <div style="margin-top: 30px; opacity: 0.2; font-size: 9px; letter-spacing: 1px;">CORE ENGINE : IZUMI</div>
@@ -172,14 +194,12 @@ function toggleSidebar() {
   } else {
     overlay.style.opacity = '0';
     setTimeout(() => overlay.style.display = 'none', 300);
+    closeAllMenus(); // Sidebar band hone par menus bhi band
   }
 }
 
-// 1. SAVE HISTORY FIX (Caption Added, No Double Trigger)
 function saveToHistory(downloadUrl, caption) {
   let history = JSON.parse(localStorage.getItem('nexus_history') || '[]');
-  
-  // Duplicate URL check
   if (history.some(item => item.url === downloadUrl)) return;
 
   const newEntry = {
@@ -193,6 +213,21 @@ function saveToHistory(downloadUrl, caption) {
   localStorage.setItem('nexus_history', JSON.stringify(history));
   renderHistory();
 }
+
+// 🍔 Three Dots Menu Handler
+function toggleMenu(e, index) {
+  e.stopPropagation();
+  closeAllMenus();
+  const menu = document.getElementById(`menu-${index}`);
+  menu.classList.toggle('show');
+}
+
+function closeAllMenus() {
+  document.querySelectorAll('.delete-dropdown').forEach(m => m.classList.remove('show'));
+}
+
+// Bahar click karne par menu band
+document.addEventListener('click', closeAllMenus);
 
 function deleteHistoryItem(index) {
   let history = JSON.parse(localStorage.getItem('nexus_history') || '[]');
@@ -220,12 +255,11 @@ function renderHistory() {
   historyList.innerHTML = history.map((item, index) => `
     <li class="history-item">
       <div class="history-cap">${item.caption}</div>
+      <div class="options-btn" onclick="toggleMenu(event, ${index})">⋮</div>
+      <div class="delete-dropdown" id="menu-${index}" onclick="deleteHistoryItem(${index})">DELETE</div>
       <div class="history-meta">
         <span>🕒 ${item.time}</span>
-        <div style="display:flex; gap:10px; align-items:center;">
-          <a href="${item.url}" target="_blank">RE-DOWNLOAD</a>
-          <span class="del-btn" onclick="deleteHistoryItem(${index})">×</span>
-        </div>
+        <a href="${item.url}" target="_blank">RE-DOWNLOAD</a>
       </div>
     </li>
   `).join('');
@@ -240,7 +274,6 @@ function showStatus(text) {
   statusText.innerText = text;
 }
 
-// 2. FETCH FIX (Server se caption lega aur sirf ek baar save karega)
 async function startDownload() {
   const link = document.getElementById("linkInput").value.trim();
   resultBox.innerHTML = "";
@@ -258,10 +291,7 @@ async function startDownload() {
     
     if (data.status === "success") {
       showStatus(" Success: Media engine ready.");
-      // Result link update (onclick removed to prevent double entry)
       resultBox.innerHTML = `<a href="${data.link}" download>DOWNLOAD NOW</a>`;
-      
-      // Save only once here
       saveToHistory(data.link, data.caption);
     } else {
       showStatus("⚠️ " + data.message);
