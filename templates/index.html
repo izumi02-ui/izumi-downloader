@@ -8,104 +8,115 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0f1020">
+<meta name="theme-color" content="#000000">
 <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/izumi02-ui/izumi-downloader/refs/heads/main/file_0000000086cc7206b52bd98a7f95f826.png">
 
-<title>Nexus — Media History System</title>
+<title>Nexus — Advanced Media Saving System</title>
+<meta name="description" content="NEXUS'S System: High-speed Instagram media fetching with IZUMI engine.">
+
+<meta property="og:title" content="NEXUS : MEDIA SAVING SYSTEM">
+<meta property="og:description" content="Download high-quality Instagram media instantly via Nexus's Engine.">
+<meta property="og:image" content="https://raw.githubusercontent.com/izumi02-ui/izumi-downloader/refs/heads/main/New%20Project%206%20%5B43F93B0%5D.png">
+<meta property="og:type" content="website">
 
 <style>
-/* 🏎️ PERFORMANCE LAYER */
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;500;700&display=swap');
+
+/* 🏎️ PERFORMANCE ENGINE */
+* { 
+  box-sizing: border-box; 
+  -webkit-tap-highlight-color: transparent; 
+  font-family: 'SF Pro Display', -apple-system, sans-serif;
+}
 
 body {
   margin: 0; min-height: 100vh;
   display: flex; align-items: center; justify-content: center;
-  background: radial-gradient(circle at top, #0f1020, #05050a) no-repeat center center fixed;
-  background-size: cover;
-  font-family: 'Poppins', system-ui, sans-serif;
+  background: #000;
+  background-image: radial-gradient(circle at 50% 0%, #1c1c2e 0%, #000 100%);
   color: white; overflow: hidden;
   position: fixed; width: 100%; height: 100%;
 }
 
-#overlay {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.4); z-index: 999;
-  display: none; opacity: 0; transition: opacity 0.3s ease;
+/* 🧬 iOS Glass Structure */
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(45px) saturate(200%);
+  -webkit-backdrop-filter: blur(45px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.menu-btn {
-  position: absolute; top: 25px; right: 25px;
-  cursor: pointer; z-index: 1001; padding: 10px;
-}
-.menu-btn div { width: 22px; height: 2px; background: white; margin: 5px 0; border-radius: 2px; }
-
+/* 🎬 HyperOS Control Bar Animation */
 .sidebar {
-  position: fixed; top: 0; right: 0;
-  width: 280px; height: 100%;
-  background: rgba(10, 10, 25, 0.95); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-  z-index: 1000; transform: translate3d(100%, 0, 0);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  padding: 80px 20px 20px; border-left: 1px solid rgba(255,255,255,0.05);
+  position: fixed; top: 10px; right: 10px; bottom: 10px;
+  width: 300px; border-radius: 35px;
+  z-index: 1000; 
+  transform: translate3d(115%, 0, 0) scale(0.9);
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  padding: 40px 20px;
 }
-.sidebar.active { transform: translate3d(0, 0, 0); }
-.sidebar h2 { font-size: 16px; letter-spacing: 2px; color: #8f7bff; margin-bottom: 20px; text-transform: uppercase; }
+.sidebar.active { transform: translate3d(0, 0, 0) scale(1); }
 
-.history-list { list-style: none; padding: 0; max-height: 70vh; overflow-y: auto; }
+/* 💎 UI Elements */
+.card {
+  width: 90%; max-width: 400px;
+  border-radius: 50px; padding: 55px 30px;
+  text-align: center; z-index: 10;
+  animation: cardEntry 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
 
-/* 🎬 Updated History Item - No Download Link */
+@keyframes cardEntry {
+  from { opacity: 0; transform: scale(0.95) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.logo { font-size: 40px; font-weight: 700; letter-spacing: -1.5px; }
+.logo span { color: #007AFF; }
+
+input {
+  width: 100%; padding: 20px; border-radius: 22px; border: none;
+  background: rgba(255, 255, 255, 0.05); color: white;
+  font-size: 16px; margin: 35px 0 15px; outline: none;
+}
+input:focus { background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.3); }
+
+button {
+  width: 100%; padding: 18px; border-radius: 22px; border: none;
+  font-weight: 700; font-size: 16px; color: white;
+  background: #007AFF; cursor: pointer; transition: 0.2s;
+}
+button:active { transform: scale(0.96); opacity: 0.8; }
+
+/* 📑 History Logs (No Link) */
 .history-item {
-  background: rgba(255,255,255,0.05); padding: 14px;
-  border-radius: 12px; margin-bottom: 12px;
-  display: flex; flex-direction: column; gap: 4px;
-  border: 1px solid rgba(255,255,255,0.08);
-  position: relative;
-  cursor: default; /* Ab ye clickable nahi hai */
+  background: rgba(255, 255, 255, 0.04); padding: 16px;
+  border-radius: 22px; margin-bottom: 12px;
+  position: relative; border: 1px solid rgba(255, 255, 255, 0.05);
 }
-.history-user { font-size: 11px; font-weight: 700; color: #8f7bff; text-transform: lowercase; }
-.history-desc { font-size: 10px; font-weight: 400; color: rgba(255,255,255,0.7); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 8px; line-height: 1.4; }
-.history-meta { display: flex; justify-content: flex-start; align-items: center; font-size: 9px; opacity: 0.4; font-weight: 500; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; }
+.history-user { font-size: 12px; font-weight: 700; color: #007AFF; }
+.history-desc { font-size: 11px; opacity: 0.5; margin: 4px 0; }
+.history-meta { font-size: 9px; opacity: 0.3; }
 
-/* 🔘 Options button ( ••• ) */
-.options-btn {
-  position: absolute; top: 8px; right: 10px;
-  color: #fff; opacity: 0.6; cursor: pointer; 
-  font-size: 18px; font-weight: bold; padding: 5px; letter-spacing: -1px;
+.options-btn { position: absolute; top: 12px; right: 15px; cursor: pointer; opacity: 0.3; font-size: 18px; }
+
+.delete-popup {
+  position: absolute; top: 8px; right: 50px;
+  background: #FF3B30; color: white; border-radius: 12px;
+  padding: 6px 14px; font-size: 11px; font-weight: 700;
+  display: none; z-index: 100; animation: hyperPop 0.3s cubic-bezier(0.1, 0.9, 0.2, 1);
 }
+@keyframes hyperPop { from { opacity:0; transform: scale(0.8); } to { opacity:1; transform: scale(1); } }
 
-.delete-dropdown {
-  position: absolute; top: 35px; right: 10px;
-  background: #ff4b4b; color: white; border-radius: 8px;
-  padding: 6px 14px; font-size: 10px; font-weight: bold;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-  z-index: 10; display: none; opacity: 0;
-  transform: translateY(-5px);
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+/* 🎬 Splash Screen */
+#splash {
+  position: fixed; inset: 0; background: #000; z-index: 9999;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transition: opacity 0.6s ease-out;
 }
-.delete-dropdown.show { display: block; opacity: 1; transform: translateY(0); }
+.apple-logo { font-size: 45px; font-weight: 700; letter-spacing: -2px; animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.02); } }
 
-.clear-all { 
-  font-size: 10px; color: white; 
-  background: rgba(143, 123, 255, 0.2); 
-  padding: 5px 12px; border-radius: 8px; 
-  border: 1px solid rgba(143, 123, 255, 0.5); 
-  cursor: pointer; text-transform: uppercase; font-weight: 600;
-}
-
-/* Card, Input, Buttons */
-.card { width: 92%; max-width: 420px; background: rgba(20,20,40,0.55); backdrop-filter: blur(25px); border-radius: 24px; padding: 30px; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
-.logo { font-size: 38px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
-.logo span { color: #8f7bff; }
-.subtitle { font-size: 10px; opacity: .5; margin-bottom: 30px; text-transform: uppercase; }
-input { width: 100%; padding: 18px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); outline: none; background: rgba(0,0,0,.4); color: white; margin-bottom: 15px; }
-button { width: 100%; padding: 15px; border-radius: 15px; border: none; font-weight: 700; font-size: 15px; color: white; background: linear-gradient(135deg, #7b5cff, #9b6dff); box-shadow: 0 10px 20px rgba(123,92,255,0.3); cursor: pointer; }
-.status { margin-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-.hidden { display: none; }
-.loader { width: 32px; height: 32px; border-radius: 50%; border: 3px solid rgba(255,255,255,.05); border-top: 3px solid #8f7bff; animation: spin .9s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-#result a { display: inline-block; margin-top: 20px; color: #fff; text-decoration: none; font-weight: 600; padding: 14px 28px; background: rgba(143, 123, 255, 0.2); border: 1px solid #8f7bff; border-radius: 14px; }
-
-#splash { position: fixed; inset: 0; background: #05050a; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s ease; }
-.splash-logo { font-size: 42px; font-weight: 800; letter-spacing: 8px; color: white; }
+#overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); z-index: 999; display: none; opacity: 0; transition: 0.4s; }
 </style>
 </head>
 <body>
@@ -113,154 +124,14 @@ button { width: 100%; padding: 15px; border-radius: 15px; border: none; font-wei
 <div id="overlay" onclick="toggleSidebar()"></div>
 
 <div id="splash">
-  <div class="splash-logo">IZUMI</div>
-  <p style="font-size: 8px; opacity: 0.4; letter-spacing: 3px; margin-top: 20px;">NEXUS SYSTEM INITIALIZING...</p>
+  <div class="apple-logo">IZUMI<span>.</span></div>
+  <p style="font-size: 9px; opacity: 0.3; letter-spacing: 4px; margin-top: 20px;">HYPER OS ENGINE READY</p>
 </div>
 
-<div class="menu-btn" onclick="toggleSidebar()">
-  <div></div><div></div><div></div>
+<div class="menu-btn" style="position:absolute; top:30px; right:30px; z-index:1001; cursor:pointer;" onclick="toggleSidebar()">
+  <div style="width:22px; height:2px; background:white; margin:6px 0; border-radius:10px;"></div>
+  <div style="width:14px; height:2px; background:white; margin:6px 0; margin-left:8px; border-radius:10px;"></div>
 </div>
 
-<div class="sidebar" id="sidebar">
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-    <h2 style="margin:0;">Nexus History</h2>
-    <span onclick="clearAllHistory()" class="clear-all">Clear All</span>
-  </div>
-  <ul id="historyList" class="history-list"></ul>
-</div>
-
-<div class="card">
-  <div class="logo">IZUMI<span>.</span></div>
-  <div class="subtitle">Nexus Advanced Media Saving System</div>
-  <input id="linkInput" placeholder="Paste Instagram URL here..." autocomplete="off">
-  <button onclick="startDownload()">FETCH MEDIA</button>
-  <div id="statusBox" class="status hidden"><div class="loader"></div><p id="statusText" style="font-size: 12px; opacity: 0.9;"></p></div>
-  <div id="result"></div>
-</div>
-
-<script>
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    const splash = document.getElementById('splash');
-    splash.style.opacity = '0';
-    setTimeout(() => { splash.style.display = 'none'; }, 800);
-  }, 2000);
-  renderHistory();
-});
-
-function toggleSidebar() {
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('overlay');
-  sidebar.classList.toggle('active');
-  if(sidebar.classList.contains('active')) {
-    overlay.style.display = 'block';
-    setTimeout(() => overlay.style.opacity = '1', 10);
-  } else {
-    overlay.style.opacity = '0';
-    setTimeout(() => overlay.style.display = 'none', 300);
-    closeAllMenus();
-  }
-}
-
-function saveToHistory(username, description) {
-  let history = JSON.parse(localStorage.getItem('nexus_history') || '[]');
-  const now = new Date();
-  const options = { hour: '2-digit', minute: '2-digit', hour12: true };
-  const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
-  const timeStr = now.toLocaleTimeString('en-US', options);
-
-  const newEntry = {
-    user: username || "Instagram User",
-    desc: description || "No description available",
-    dateTime: `${dateStr} • ${timeStr}`
-  };
-  
-  history.unshift(newEntry);
-  if (history.length > 20) history.pop();
-  localStorage.setItem('nexus_history', JSON.stringify(history));
-  renderHistory();
-}
-
-function toggleMenu(e, index) {
-  e.preventDefault();
-  e.stopPropagation();
-  closeAllMenus();
-  document.getElementById(`menu-${index}`).classList.toggle('show');
-}
-
-function closeAllMenus() {
-  document.querySelectorAll('.delete-dropdown').forEach(m => m.classList.remove('show'));
-}
-
-document.addEventListener('click', closeAllMenus);
-
-function deleteHistoryItem(index) {
-  let history = JSON.parse(localStorage.getItem('nexus_history') || '[]');
-  history.splice(index, 1);
-  localStorage.setItem('nexus_history', JSON.stringify(history));
-  renderHistory();
-}
-
-function clearAllHistory() {
-  if(confirm("Clear all history?")) {
-    localStorage.removeItem('nexus_history');
-    renderHistory();
-  }
-}
-
-function renderHistory() {
-  const historyList = document.getElementById('historyList');
-  const history = JSON.parse(localStorage.getItem('nexus_history') || '[]');
-  
-  if (history.length === 0) {
-    historyList.innerHTML = '<li style="opacity:0.4; font-size:12px; margin-top:15px;">No recent saves.</li>';
-    return;
-  }
-
-  historyList.innerHTML = history.map((item, index) => `
-    <li class="history-item-container" style="position:relative;">
-        <div class="history-item">
-            <div class="history-user">@${item.user}</div>
-            <div class="history-desc">${item.desc}</div>
-            <div class="history-meta">📅 ${item.dateTime}</div>
-        </div>
-        <div class="options-btn" onclick="toggleMenu(event, ${index})">•••</div>
-        <div class="delete-dropdown" id="menu-${index}" onclick="deleteHistoryItem(${index})">DELETE</div>
-    </li>
-  `).join('');
-}
-
-async function startDownload() {
-  const link = document.getElementById("linkInput").value.trim();
-  const resultBox = document.getElementById("result");
-  const stBox = document.getElementById("statusBox");
-  const stText = document.getElementById("statusText");
-
-  resultBox.innerHTML = "";
-  if (!link) { stBox.classList.remove("hidden"); stText.innerText = "🚫 Error: Enter URL"; return; }
-  
-  stBox.classList.remove("hidden");
-  stText.innerText = "Izumi is fetching data...";
-
-  try {
-    const res = await fetch("/api/download", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({ url: link })
-    });
-    const data = await res.json();
-    
-    if (data.status === "success") {
-      stText.innerText = "Success: Media ready.";
-      resultBox.innerHTML = `<a href="${data.link}" download>DOWNLOAD NOW</a>`;
-      saveToHistory(data.username, data.description);
-    } else {
-      stText.innerText = "⚠️ " + data.message;
-    }
-  } catch (e) {
-    stText.innerText = "🚀 Connection Error.";
-  }
-}
-</script>
-</body>
-</html>
+<div class="sidebar glass" id="sidebar">
+  <div style="display:flex; justify-content:space-
