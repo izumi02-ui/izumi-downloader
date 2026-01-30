@@ -302,7 +302,7 @@ async function startDownload() {
     
     if (data.status === "success") {
       showStatus(" Success: Media engine ready.");
-      resultBox.innerHTML = `<a href="${data.link}" download>DOWNLOAD NOW</a>`;
+      resultBox.innerHTML = `<a href="${data.link}" download>DOWNLOAD</a>`;
       saveToHistory(data.link, data.caption);
     } else {
       showStatus("⚠️ " + data.message);
